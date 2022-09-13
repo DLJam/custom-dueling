@@ -105,9 +105,9 @@ function s.rfilter(c)
 	return c:IsSetCard(0x41a) and c:IsAbleToRemoveAsCost()
 end
 function s.discost(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(s.rfilter,tp,LOCATION_GRAVE,0,3,nil) end
+	if chk==0 then return Duel.IsExistingMatchingCard(s.rfilter,tp,LOCATION_HAND+LOCATION_GRAVE,0,3,nil) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_REMOVE)
-	local g=Duel.SelectMatchingCard(tp,s.rfilter,tp,LOCATION_GRAVE,0,3,3,nil)
+	local g=Duel.SelectMatchingCard(tp,s.rfilter,tp,LOCATION_HAND+LOCATION_GRAVE,0,3,3,nil)
 	Duel.Remove(g,POS_FACEUP,REASON_COST)
 end
 function s.distg(e,tp,eg,ep,ev,re,r,rp,chk)
