@@ -112,7 +112,7 @@ function s.lvop(e,tp,eg,ep,ev,re,r,rp)
 	if not tc:IsRelateToEffect(e) then return end
 	local choice=-1
 	if tc:IsLevelAbove(2) then 
-		choice=Duel.SelectOption(tp,aux.Stringid(id,4),aux.Stringid(id,5))
+		choice=Duel.SelectOption(tp,aux.Stringid(id,3),aux.Stringid(id,4))
 	else
 		choice=Duel.SelectOption(tp,aux.Stringid(id,4))
 	end
