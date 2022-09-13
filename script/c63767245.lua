@@ -48,45 +48,9 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 		Duel.Overlay(sc,tc)
 		Duel.SpecialSummon(sc,SUMMON_TYPE_XYZ,tp,tp,false,false,POS_FACEUP)
 		sc:CompleteProcedure()
-		--Effect registration
-		local e1=Effect.CreateEffect(c)
-		e1:SetCategory(CATEGORY_TODECK)
-		e1:SetType(EFFECT_TYPE_TRIGGER_O)
-		e1:SetProperty(EFFECT_FLAG_CARD_TARGET)
-		e1:SetCode(EVENT_SPSUMMON_SUCCESS)
-		e1:SetRange(LOCATION_MZONE)
-		e1:SetCondition(s.rtdcon)
-		e1:SetTarget(s.rtdtg)
-		e1:SetOperation(s.rtdop)
-		e1:SetReset(RESET_EVENT+RESETS_STANDARD)
-		sc:RegisterEffect(e1,true)		
-		--In case the target has no effects
-		if not c:IsType(TYPE_EFFECT) then
-			local e2=Effect.CreateEffect(c)
-			e2:SetType(EFFECT_TYPE_SINGLE)
-			e2:SetCode(EFFECT_ADD_TYPE)
-			e2:SetValue(TYPE_EFFECT)
-			e2:SetReset(RESET_EVENT+RESETS_STANDARD)
-			sc:RegisterEffect(e2,true)
+		if c:IsRelateToEffect(e) then
+			c:CancelToGrave()
+			Duel.Overlay(sc,c)
 		end
-		sc:CompleteProcedure()
-		sc:RegisterFlagEffect(0,RESET_EVENT+RESETS_STANDARD,EFFECT_FLAG_CLIENT_HINT,1,0,aux.Stringid(id,0))
-	end
-end
-function s.rtdcon(e,tp,eg,ep,ev,re,r,rp)
-    return e:GetHandler():IsSummonType(SUMMON_TYPE_XYZ)
-end
-function s.rtdtg(e,tp,eg,ep,ev,re,r,rp,chk)
-	local sg=Duel.SelectMatchingCard(tp,Card.IsAbleToDeck,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,1,nil)
-	if #sg>0 then
-		Duel.HintSelection(sg)
-		Duel.SendtoDeck(sg,nil,2,REASON_EFFECT)
-	end
-end
-function s.rtdop(e,tp,eg,ep,ev,re,r,rp)
-	local tc=Duel.GetFirstTarget()
-	if tc:IsRelateToEffect(e) and Duel.SendtoDeck(tc,REASON_EFFECT)~=0 and Duel.IsPlayerCanDraw(tp,1)
-		and Duel.SelectYesNo(tp,aux.Stringid(id,2)) then
-		Duel.Draw(tp,1,REASON_EFFECT)
 	end
 end
