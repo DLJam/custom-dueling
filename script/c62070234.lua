@@ -23,7 +23,16 @@ function c62070234.initial_effect(c)
 	e2:SetCountLimit(1,{id,1})
 	e2:SetTarget(s.spatg)
 	e2:SetOperation(s.spaop)
-	c:RegisterEffect(e2)  
+	c:RegisterEffect(e2) 
+	local e3=Effect.CreateEffect(c)
+	e3:SetDescription(aux.Stringid(id,2))
+	e3:SetType(EFFECT_TYPE_XMATERIAL+EFFECT_TYPE_FIELD)
+	e3:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
+	e3:SetRange(LOCATION_MZONE)
+	e3:SetTargetRange(0,1)
+	e3:SetCondition(s.gftcon)
+	e3:SetValue(s.actlimit)
+	c:RegisterEffect(e3)
 end
 
 s.listed_series={0x85a,0x84a}
@@ -69,4 +78,14 @@ function s.spaop(e,tp,eg,ep,ev,re,r,rp)
 	if #g>0 then
 		Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP)
 	end
+end
+
+function s.actcon(e,tp,eg,ep,ev,re,r,rp)
+	local ph=Duel.GetCurrentPhase()
+	return ph>=PHASE_BATTLE_START and ph<=PHASE_BATTLE and
+	return e:GetHandler():(IsSetCard(0x85a) or IsSetCard(0x84a))
+end
+
+function s.actlimit(e,re,tp)
+	return re:IsActiveType(TYPE_MONSTER)
 end
