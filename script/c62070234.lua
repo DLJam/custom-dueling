@@ -10,7 +10,6 @@ function c62070234.initial_effect(c)
 	e1:SetRange(LOCATION_HAND)
 	e1:SetCountLimit(1,id)
 	e1:SetCondition(s.spcon)
-	e1:SetTarget(s.sptg)
 	e1:SetOperation(s.spop)
 	c:RegisterEffect(e1)
 	--Special Summon Another Snow Shard from GY
@@ -28,40 +27,24 @@ function c62070234.initial_effect(c)
 	e3:SetDescription(aux.Stringid(id,2))
 	e3:SetType(EFFECT_TYPE_XMATERIAL+EFFECT_TYPE_FIELD)
 	e3:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
+	e3:SetCode(EFFECT_CANNOT_ACTIVATE)
 	e3:SetRange(LOCATION_MZONE)
 	e3:SetTargetRange(0,1)
-	e3:SetCondition(s.gftcon)
-	e3:SetValue(s.actlimit)
+	e3:SetCondition(s.actcon)
+	e3:SetValue(s.aclimit)
 	c:RegisterEffect(e3)
 end
 
 s.listed_series={0x85a,0x84a}
 
-function s.spfilter(c)
-	return c:IsRace(RACE_FISH)
-end
 function s.spcon(e,c)
 	if c==nil then return true end
-	local tp=e:GetHandlerPlayer()
-	local rg=Duel.GetMatchingGroup(s.spfilter,tp,LOCATION_HAND,0,nil)
-	return aux.SelectUnselectGroup(rg,e,tp,1,1,aux.ChkfMMZ(1),0,c)
-end
-function s.sptg(e,tp,eg,ep,ev,re,r,rp,c)
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DISCARD)
-	local rg=Duel.GetMatchingGroup(s.spfilter,tp,LOCATION_HAND,0,nil)
-	local g=aux.SelectUnselectGroup(rg,e,tp,1,1,aux.ChkfMMZ(1),1,tp,HINTMSG_REMOVE,nil,nil,true)
-	if #g>0 then
-		g:KeepAlive()
-		e:SetLabelObject(g)
-		return true
-	end
-	return false
+	return Duel.IsExistingMatchingCard(Card.IsRace,c:GetControler(),LOCATION_HAND,0,1,c,RACE_FISH)
 end
 function s.spop(e,tp,eg,ep,ev,re,r,rp,c)
-	local g=e:GetLabelObject()
-	if not g then return end
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DISCARD)
+	local g=Duel.SelectMatchingCard(tp,Card.IsRace,tp,LOCATION_HAND,0,1,1,c,RACE_FISH)
 	Duel.SendtoGrave(g,REASON_DISCARD+REASON_COST)
-	g:DeleteGroup()
 end
 
 function s.spafilter(c,e,tp)
@@ -80,12 +63,10 @@ function s.spaop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 
-function s.actcon(e,tp,eg,ep,ev,re,r,rp)
+function s.actcon(e)
 	local ph=Duel.GetCurrentPhase()
-	return ph>=PHASE_BATTLE_START and ph<=PHASE_BATTLE and
-	return e:GetHandler():(IsSetCard(0x85a) or IsSetCard(0x84a))
+	return ph>=PHASE_BATTLE_START and ph<=PHASE_BATTLE
 end
-
-function s.actlimit(e,re,tp)
+function s.aclimit(e,re,tp)
 	return re:IsActiveType(TYPE_MONSTER)
 end
