@@ -24,11 +24,13 @@ function c6853272.initial_effect(c)
 	c:RegisterEffect(e2)   
 end
 
-	--Filter for LIGHT/DARK dragons
+s.listed_series={0x41a}
+
+	--Filter for DL dragons
 function s.spfilter(c)
-	return c:IsFaceup() and c:IsAttribute(ATTRIBUTE_LIGHT+ATTRIBUTE_DARK) and c:IsRace(RACE_DRAGON)
+	return c:IsFaceup() and c:IsSetCard(0x41a) and c:IsRace(RACE_DRAGON)
 end
-	--Check for 2+ LIGHT/DARK dragons
+	--Check for 2+ DL dragons
 function s.spcon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.IsExistingMatchingCard(s.spfilter,tp,LOCATION_MZONE,0,2,nil)
 end
