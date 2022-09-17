@@ -29,7 +29,7 @@ function c62070240.initial_effect(c)
 	c:RegisterEffect(e3)
 end
 
-s.listed_series={0x85a,0x95}
+s.listed_series={0x85a,0x95,0x177,0x1178}
 
 function s.thfilter(c)
 	return c:IsSetCard(0x85a) and c:IsAbleToHand()

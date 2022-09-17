@@ -34,7 +34,7 @@ function c62070235.initial_effect(c)
 	c:RegisterEffect(e3)
 end
 
-s.listed_series={0x85a,0x84a}
+s.listed_series={0x85a,0x84a,0x1178}
 
 function s.spcon(e,c)
 	if c==nil then return true end
