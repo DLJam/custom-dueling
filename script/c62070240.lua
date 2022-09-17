@@ -14,12 +14,20 @@ function c62070240.initial_effect(c)
 	e2:SetDescription(aux.Stringid(id,1))
 	e2:SetCategory(CATEGORY_TOHAND+CATEGORY_SEARCH)
 	e2:SetProperty(EFFECT_TYPE_TRIGGER_O)
-	e5:SetCode(EVENT_TO_GRAVE)
+	e2:SetCode(EVENT_TO_GRAVE)
 	e2:SetCountLimit(1,{id,1})
 	e2:SetCondition(s.thcon)
 	e2:SetTarget(s.thtg)
 	e2:SetOperation(s.thop)
 	c:RegisterEffect(e2)	
+	--atk down
+	local e3=Effect.CreateEffect(c)
+	e3:SetType(EFFECT_TYPE_FIELD)
+	e3:SetCode(EFFECT_UPDATE_ATTACK)
+	e3:SetRange(LOCATION_SZONE)
+	e3:SetTargetRange(0,LOCATION_MZONE)
+	e3:SetValue(function(e,c) return Duel.GetFieldGroupCount(e:GetHandlerPlayer(),LOCATION_ONFIELD,0)*-100 end)
+	c:RegisterEffect(e3)
 end
 
 s.listed_series={0x85a,0x95}
@@ -40,7 +48,7 @@ end
 
 function s.filter(c,dct) 
 	return ((((c:IsSetCard(0x177) and not c:IsCode(id)) or c:IsSetCard(0x1178)) and c:IsType(TYPE_SPELL+TYPE_TRAP))
-		or (c:IsSetCard(0x95) and c:GetType(TYPE_SPELL))
+		or (c:IsSetCard(0x95) and c:GetType(TYPE_SPELL)))
 		and (c:IsAbleToHand() or dct>1)
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
