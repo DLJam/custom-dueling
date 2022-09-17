@@ -35,3 +35,7 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 		Duel.ConfirmCards(1-tp,sg)
 	end
 end
+
+function s.aclimit(e,re,tp)
+	return (c:GetAttack()>c:GetBaseAttack() or c:GetDefense()>c:GetBaseDefense() or c:GetAttack()<c:GetBaseAttack() or c:GetDefense()<c:GetBaseDefense()) and re:IsActiveType(TYPE_MONSTER)
+end
