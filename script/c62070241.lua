@@ -15,7 +15,7 @@ function c62070241.initial_effect(c)
 	e2:SetRange(LOCATION_MZONE)
 	e2:SetCode(EFFECT_CANNOT_ACTIVATE)
 	e2:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
-	e2:SetTargetRange(0,1)
+	e2:SetTargetRange(1,1)
 	e2:SetValue(s.aclimit)
 	c:RegisterEffect(e2)  
 end
