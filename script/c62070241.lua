@@ -34,7 +34,7 @@ function c62070241.initial_effect(c)
 	c:RegisterEffect(e3)
 end
 
-s.listed_series={0x85a}
+s.listed_series={0x84a,0x85a}
 
 function s.thfilter(c)
 	return c:IsSetCard(0x85a) and c:IsType(TYPE_SPELL) and c:IsAbleToHand()
