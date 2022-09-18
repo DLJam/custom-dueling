@@ -11,12 +11,11 @@ function c62070241.initial_effect(c)
 	c:RegisterEffect(e1)  
 	--Prevent Activation
 	local e2=Effect.CreateEffect(c) 
-	e2:SetType(EFFECT_TYPE_FIELD) 
- ​  e2:SetRange(LOCATION_MZONE)
-	e2:SetTargetRange(1,1)
-	e2:SetCode(EFFECT_CANNOT_TRIGGER) ​
- ​  e2:SetTarget(s.aclimit) 
- ​  e2:SetValue(0) 
+	e2:SetType(EFFECT_TYPE_FIELD)
+	e2:SetRange(LOCATION_MZONE)
+	e2:SetCode(EFFECT_CANNOT_TRIGGER)
+	e2:SetTarget(s.aclimit)
+	e2:SetValue(0) 
 	c:RegisterEffect(e2)  
 end
 
