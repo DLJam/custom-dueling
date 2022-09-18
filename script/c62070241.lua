@@ -37,5 +37,6 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 end
 
 function s.aclimit(e,re,tp)
-	return (re:GetAttack()>re:GetBaseAttack() or re:GetDefense()>re:GetBaseDefense() or re:GetAttack()<c:GetBaseAttack() or re:GetDefense()<re:GetBaseDefense()) and re:IsActiveType(TYPE_MONSTER)
+	local tc=re:GetHandler()
+	return (tc:GetAttack()>tc:GetBaseAttack() or tc:GetDefense()>tc:GetBaseDefense() or tc:GetAttack()<tc:GetBaseAttack() or tc:GetDefense()<tc:GetBaseDefense()) and tc:IsActiveType(TYPE_MONSTER)
 end
