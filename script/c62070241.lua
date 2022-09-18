@@ -10,7 +10,7 @@ function c62070241.initial_effect(c)
 	e1:SetOperation(s.activate)
 	c:RegisterEffect(e1)  
 	--Prevent Activation
-	local e2=Effect.​CreateEffect(c) 
+	local e2=Effect.CreateEffect(c) 
 	e2:SetType(EFFECT_TYPE_FIELD) 
  ​  e2:SetRange(LOCATION_MZONE) 
 	e2:SetCode(EFFECT_CANNOT_TRIGGER) ​
