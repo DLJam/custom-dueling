@@ -10,14 +10,13 @@ function c62070241.initial_effect(c)
 	e1:SetOperation(s.activate)
 	c:RegisterEffect(e1)  
 	--Prevent Activation
-	local e2=Effect.CreateEffect(c)
-	e2:SetType(EFFECT_TYPE_FIELD)
-	e2:SetRange(LOCATION_MZONE)
-	e2:SetCode(EFFECT_CANNOT_ACTIVATE)
-	e2:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
-	e2:SetTargetRange(1,1)
-	e2:SetValue(s.aclimit)
-	c:RegisterEffect(e2)  
+	local e2=Effect.​CreateEffect(c) 
+	e2:SetType(EFFECT_TYPE_FIELD) 
+ ​  e2:SetRange(LOCATION_MZONE) 
+	e2:SetCode(EFFECT_CANNOT_TRIGGER) ​
+ ​  e2:SetTarget(s.aclimit) 
+ ​  e2:SetValue(0) 
+ ​  c:RegisterEffect(e2)   
 end
 
 s.listed_series={0x85a}
@@ -36,7 +35,6 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 
-function s.aclimit(e,re,tp)
-	local tc=re:GetHandler()
-	return (tc:GetAttack()>tc:GetBaseAttack() or tc:GetDefense()>tc:GetBaseDefense() or tc:GetAttack()<tc:GetBaseAttack() or tc:GetDefense()<tc:GetBaseDefense()) and tc:IsActiveType(TYPE_MONSTER)
+function s.aclimit(e,c,tp)
+	return (c:GetAttack()>c:GetBaseAttack() or c:GetDefense()>c:GetBaseDefense() or c:GetAttack()<c:GetBaseAttack() or c:GetDefense()<c:GetBaseDefense()) and tc:IsActiveType(TYPE_MONSTER)
 end
