@@ -27,7 +27,7 @@ end
 s.listed_series={0x85a}
 
 function s.cfilter(c)
-	return c:GetLevel()~=c:GetOriginalLevel()
+	return c:GetLevel()~=c:GetOriginalLevel() and c:IsType(TYPE_MONSTER)
 end
 function s.spcon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_MZONE,1,1,nil)
