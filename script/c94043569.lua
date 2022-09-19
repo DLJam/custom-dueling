@@ -1,6 +1,6 @@
 --Incant-Staff of Wonder
 local s,id=GetID()
-function c7204043568.initial_effect(c)
+function c94043569.initial_effect(c)
 	aux.AddEquipProcedure(c,nil,aux.FilterBoolFunction(Card.IsSetCard,0xa14))
 	--increase ATK
 	local e2=Effect.CreateEffect(c)

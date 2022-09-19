@@ -1,6 +1,6 @@
 --Incant-Mage, Rayus
 local s,id=GetID()
-function c7204043568.initial_effect(c)
+function c94043568.initial_effect(c)
 	--summon success
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(id,0))
