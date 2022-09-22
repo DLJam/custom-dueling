@@ -1,6 +1,8 @@
 --Talented Incantor, Neamo
 local s,id=GetID()
 function c94043573.initial_effect(c)
+	c:EnableReviveLimit()
+	Link.AddProcedure(c,nil,2,2,s.matcheck)
 	--search
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(id,0))
@@ -15,6 +17,10 @@ function c94043573.initial_effect(c)
 end
 
 s.listed_series={0xa14}
+
+function s.matcheck(g,lc,sumtype,tp)
+	return g:IsExists(Card.IsSetCard,1,nil,0xa14,lc,sumtype,tp)
+end
 
 function s.thcon(e,tp,eg,ep,ev,re,r,rp)
 	return e:GetHandler():IsSummonType(SUMMON_TYPE_LINK)
