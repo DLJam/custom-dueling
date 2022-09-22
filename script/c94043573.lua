@@ -40,3 +40,45 @@ function s.thop(e,tp,eg,ep,ev,re,r,rp)
 		Duel.ConfirmCards(1-tp,g)
 	end
 end
+
+function s.mfilter(c)
+	return c:HasLevel() and not c:IsLevel(0)
+end
+function s.matcheck(g,lc,sumtype,tp)
+	return g:GetClassCount(Card.GetLevel)==#g
+end
+function s.cfilter(c,tp,lg)
+	return c:IsLevelAbove(1) and c:IsFaceup() and c:IsControler(tp) and lg:IsContains(c)
+end
+function s.lvcon(e,tp,eg,ep,ev,re,r,rp)
+	local lg=e:GetHandler():GetLinkedGroup()
+	return eg:IsExists(s.cfilter,1,nil,tp,lg)
+end
+function s.lvtg(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return true end
+	local lg=e:GetHandler():GetLinkedGroup()
+	local g=eg:Filter(s.cfilter,nil,tp,lg)
+	local lv
+	if #g==1 then
+		lv=g:GetFirst():GetLevel()
+	end
+	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(id,2))
+	e:SetLabel(Duel.AnnounceLevel(tp,1,8,lv))
+	e:SetLabelObject(g)
+end
+function s.opfilter(c,e)
+	return c:IsFaceup() and c:IsRelateToEffect(e)
+end
+function s.lvop(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
+	local lg=e:GetHandler():GetLinkedGroup()
+	local g=eg:Filter(s.cfilter,nil,tp,lg)
+	for tc in aux.Next(g) do
+		local e1=Effect.CreateEffect(c)
+		e1:SetType(EFFECT_TYPE_SINGLE)
+		e1:SetCode(EFFECT_CHANGE_LEVEL)
+		e1:SetValue(e:GetLabel())
+		e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
+		tc:RegisterEffect(e1)
+	end
+end
