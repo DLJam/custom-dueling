@@ -64,7 +64,7 @@ function s.tdop(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
 	if tc and tc:IsRelateToEffect(e) and Duel.SendtoDeck(tc,nil,SEQ_DECKSHUFFLE,REASON_EFFECT)>0
 		and tc:IsLocation(LOCATION_DECK+LOCATION_EXTRA) and e:GetLabel()==1 and Duel.IsPlayerCanDraw(tp,1)
-		and Duel.SelectYesNo(tp,aux.Stringid(id,1)) then
+		and Duel.SelectYesNo(tp,aux.Stringid(id,4)) then
 		Duel.BreakEffect()
 		if tc:IsLocation(LOCATION_DECK) and tc:IsControler(tp) then
 			Duel.ShuffleDeck(tp)
@@ -111,7 +111,7 @@ function s.discost(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.Remove(g,POS_FACEUP,REASON_COST)
 end
 function s.distg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(aux.disfilter3,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,e:GetHandler()) end
+	if chk==0 then return Duel.IsExistingMatchingCard(Card.IsNegatable,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,e:GetHandler()) end
 end
 function s.disop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
