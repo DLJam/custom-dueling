@@ -28,7 +28,7 @@ function s.flipcon(e,tp,eg,ep,ev,re,r,rp)
 	--condition
 	return Duel.GetCurrentChain()==0 and tp==Duel.GetTurnPlayer()
 		and Duel.GetDrawCount(tp)>0
-		and s[2+tp]>=4000
+		and s[2+tp]>=0000
 end
 function s.flipop(e,tp,eg,ep,ev,re,r,rp)
 	--ask if you want to activate the skill or not
@@ -50,16 +50,16 @@ function s.flipop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SKILL_FLIP,tp,id|(1<<32))
 	Duel.Hint(HINT_CARD,tp,id)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
-	local ac0=Duel.createtoken(tp,64591429)
+	local ac0=Duel.CreateToken(tp,64591429)
 	Duel.SendtoHand(ac0,nil,REASON_EFFECT)
-	local ac1=Duel.createtoken(tp,69852487)
+	local ac1=Duel.CreateToken(tp,69852487)
 	Duel.SendtoHand(ac1,nil,REASON_EFFECT)
-	local ac2=Duel.createtoken(tp,84013237)
-	Duel.SendtoDeck(ac2,nil,REASON_EFFECT)
-	local ac3=Duel.createtoken(tp,7194917)
-	Duel.SendtoDeck(ac3,nil,REASON_EFFECT)
-	local ac4=Duel.createtoken(tp,66011101)
-	Duel.SendtoDeck(ac4,nil,REASON_EFFECT)
+	local ac2=Duel.CreateToken(tp,84013237)
+	Duel.SendtoDeck(ac2,nil,SEQ_DECKBOTTOM,REASON_EFFECT)
+	local ac3=Duel.CreateToken(tp,7194917)
+	Duel.SendtoDeck(ac3,nil,SEQ_DECKBOTTOM,REASON_EFFECT)
+	local ac4=Duel.CreateToken(tp,66011101)
+	Duel.SendtoDeck(ac4,nil,SEQ_DECKBOTTOM,REASON_EFFECT)
 		if Duel.SendtoHand(g,nil,REASON_EFFECT)~=0 then
 			Duel.Hint(HINT_SKILL_FLIP,tp,id|(2<<32))
 			s[2+tp]=0
