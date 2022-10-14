@@ -60,9 +60,8 @@ function s.flipop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.SendtoDeck(ac3,nil,SEQ_DECKBOTTOM,REASON_EFFECT)
 	local ac4=Duel.CreateToken(tp,66011101)
 	Duel.SendtoDeck(ac4,nil,SEQ_DECKBOTTOM,REASON_EFFECT)
-		if Duel.SendtoHand(g,nil,REASON_EFFECT)~=0 then
-			Duel.Hint(HINT_SKILL_FLIP,tp,id|(2<<32))
-			s[2+tp]=0
-	end
-		Duel.ConfirmCards(1-tp,g)
+	Duel.Hint(HINT_SKILL_FLIP,tp,id|(2<<32))
+	s[2+tp]=0
+	Duel.ConfirmCards(1-tp,ac0)
+	Duel.ConfirmCards(1-tp,ac1)
 end
