@@ -12,12 +12,21 @@ function c62070239.initial_effect(c)
 	e1:SetTarget(s.sptg)
 	e1:SetOperation(s.spop)
 	c:RegisterEffect(e1)   
+	--Send a monster to GY
+	local e2=Effect.CreateEffect(c)
+	e2:SetCategory(CATEGORY_TOGRAVE)
+	e2:SetType(EFFECT_TYPE_QUICK_O)
+	e2:SetCode(EVENT_FREE_CHAIN)
+	e2:SetCountLimit(1,{id+1})
+	e2:SetTarget(s.target)
+	e2:SetOperation(s.togy)
+	c:RegisterEffect(e2)
 end
 
 s.listed_series={0x85a}
 
 function s.cfilter(c)
-	return c:GetLevel()~=c:GetOriginalLevel() and c:IsType(TYPE_MONSTER)
+	return c:GetAttack()~=c:GetBaseAttack() or c:GetDefense()~=c:GetBaseDefense() and c:IsType(TYPE_MONSTER)
 end
 function s.spcon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_MZONE,1,1,nil)
@@ -31,5 +40,19 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	if c:IsRelateToEffect(e) then
 		Duel.SpecialSummon(c,0,tp,tp,false,false,POS_FACEUP)
+	end
+end
+
+function s.filter(c)
+	return c:GetAttack()~=c:GetBaseAttack() and c:IsAbleToGrave()
+end
+function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return Duel.IsExistingMatchingCard(s.filter,tp,0,LOCATION_MZONE,1,nil) end
+	Duel.SetOperationInfo(0,CATEGORY_TOGRAVE,nil,0,1-tp,LOCATION_MZONE)
+end
+function s.togy(e,tp,eg,ep,ev,re,r,rp)
+	local g=Duel.SelectMatchingCard(tp,Card.IsAbleToGrave,tp,0,LOCATION_ONFIELD,0,1,nil)
+	if #g>0 then
+		Duel.SendtoGrave(g,REASON_EFFECT)
 	end
 end
