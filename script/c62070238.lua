@@ -19,6 +19,9 @@ function c62070238.initial_effect(c)
 	e2:SetType(EFFECT_TYPE_QUICK_O)
 	e2:SetCode(EVENT_FREE_CHAIN)
 	e2:SetCountLimit(1,{id,1})
+	e2:SetHintTiming(0,TIMINGS_CHECK_MONSTER+TIMING_MAIN_END)
+	e2:SetCost(aux.bfgcost)
+	e2:SetCondition(s.actcon)
 	e2:SetTarget(s.thtg)
 	e2:SetOperation(s.thop)
 	c:RegisterEffect(e2)
@@ -44,6 +47,9 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 
+function s.actcon()
+	return Duel.IsMainPhase()
+end
 function s.thfilter(c,tp)
 	return c:IsSetCard(0x85a) and c:GetType()==0x20002
 		and (c:IsAbleToHand() or (c:GetActivateEffect():IsActivatable(tp,true,true) and Duel.GetLocationCount(tp,LOCATION_SZONE)>0))
