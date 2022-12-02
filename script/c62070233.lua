@@ -105,7 +105,7 @@ function s.spaop(e,tp,eg,ep,ev,re,r,rp)
 end
 
 function s.effcon(e,tp,eg,ep,ev,re,r,rp)
-	return r==REASON_XYZ and (e:GetHandler():GetReasonCard():IsCode(62070231) or e:GetHandler():GetReasonCard():IsSetCard(0x85a))
+	return r==REASON_XYZ and (e:GetHandler():GetReasonCard():IsSetCard(0x84a) or e:GetHandler():GetReasonCard():IsSetCard(0x85a))
 end
 function s.effop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_CARD,0,id)
