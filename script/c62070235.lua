@@ -62,7 +62,7 @@ function s.condition(e,tp,eg,ep,ev,re,r,rp)
 	return e:GetHandler():IsSetCard(0x84a) or e:GetHandler():IsSetCard(0x85a)
 end
 function s.thfilter(c)
-	return (c:IsSetCard(0x85a) or c:IsSetCard(0x1178)) and c:IsAbleToHand()
+	return (c:IsSetCard(0x85a) or c:IsSetCard(0x1178)) and c:IsType(TYPE_SPELL) and c:IsAbleToHand()
 end
 function s.thtg2(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.thfilter,tp,LOCATION_GRAVE,0,1,nil) end
