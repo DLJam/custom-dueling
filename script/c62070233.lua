@@ -1,7 +1,7 @@
 --Snow Shard Predator, Krahs
 local s,id=GetID()
 function c62070233.initial_effect(c)
-`	--Special Summon by shuffling
+	--Special Summon by shuffling
     local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(id,0))
 	e1:SetType(EFFECT_TYPE_FIELD)
