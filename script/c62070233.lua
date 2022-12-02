@@ -44,7 +44,7 @@ function s.spfilter(c,tp)
 end
 function s.spcon(e,c)
 	if c==nil then return true end
-	local c=e:GetHandlerPlayer()
+	local tp=e:GetHandlerPlayer()
 	local rg=Duel.GetMatchingGroup(s.spfilter,tp,LOCATION_GRAVE,0,nil)
 	local eff={c:GetCardEffect(EFFECT_NECRO_VALLEY)}
 	for _,te in ipairs(eff) do
