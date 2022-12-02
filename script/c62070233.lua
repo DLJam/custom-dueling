@@ -1,7 +1,8 @@
 --Snow Shard Predator, Krahs
 local s,id=GetID()
 function c62070233.initial_effect(c)
-   local e1=Effect.CreateEffect(c)
+`	--Special Summon by shuffling
+    local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(id,0))
 	e1:SetType(EFFECT_TYPE_FIELD)
 	e1:SetCode(EFFECT_SPSUMMON_PROC)
@@ -112,7 +113,6 @@ function s.effop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local rc=c:GetReasonCard()
 	local e1=Effect.CreateEffect(c)
-    e1:SetDescription(aux.Stringid(id,1))
     e1:SetCategory(CATEGORY_ATKCHANGE)
     e1:SetType(EFFECT_TYPE_IGNITION)
     e1:SetProperty(EFFECT_FLAG_CARD_TARGET)
