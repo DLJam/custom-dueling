@@ -22,15 +22,11 @@ function c62070235.initial_effect(c)
 	c:RegisterEffect(e2)
 	--S/T Recycle
 	local e3=Effect.CreateEffect(c)
-	e3:SetDescription(aux.Stringid(62070235,1))
-	e3:SetCategory(CATEGORY_TOHAND)
-	e3:SetType(EFFECT_TYPE_XMATERIAL+EFFECT_TYPE_IGNITION)
-	e3:SetProperty(EFFECT_FLAG_CARD_TARGET)
-	e3:SetRange(LOCATION_MZONE)
-	e2:SetCountLimit(1)
-	e3:SetCondition(s.condition)
-	e3:SetTarget(s.thtg2)
-	e3:SetOperation(s.thop2)
+	e3:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
+	e3:SetCode(EVENT_BE_MATERIAL)
+	e3:SetCondition(s.effcon)
+	e3:SetOperation(s.effop)
+	c:RegisterEffect(e3)
 	c:RegisterEffect(e3)
 end
 
@@ -55,6 +51,35 @@ function s.thop(e,tp,eg,ep,ev,re,r,rp)
 	if #g>0 then
 		Duel.SendtoHand(g,nil,REASON_EFFECT)
 		Duel.ConfirmCards(1-tp,g)
+	end
+end
+
+--Effect Gift
+function s.effcon(e,tp,eg,ep,ev,re,r,rp)
+	return r==REASON_XYZ and (e:GetHandler():GetReasonCard():IsSetCard(0x84a) or e:GetHandler():GetReasonCard():IsSetCard(0x85a))
+end
+function s.effop(e,tp,eg,ep,ev,re,r,rp)
+	Duel.Hint(HINT_CARD,0,id)
+	local c=e:GetHandler()
+	local rc=c:GetReasonCard()
+	local e1=Effect.CreateEffect(c)
+	e1:SetDescription(aux.Stringid(62070235,1))
+	e1:SetCategory(CATEGORY_TOHAND)
+	e1:SetType(EFFECT_TYPE_IGNITION)
+	e1:SetProperty(EFFECT_FLAG_CARD_TARGET)
+	e1:SetRange(LOCATION_MZONE)
+	e1:SetCountLimit(1)
+	e1:SetCondition(s.condition)
+	e1:SetTarget(s.thtg2)
+	e1:SetOperation(s.thop2)
+	rc:RegisterEffect(e1,true)
+	if not rc:IsType(TYPE_EFFECT) then
+		local e2=Effect.CreateEffect(c)
+		e2:SetType(EFFECT_TYPE_SINGLE)
+		e2:SetCode(EFFECT_ADD_TYPE)
+		e2:SetValue(TYPE_EFFECT)
+		e2:SetReset(RESET_EVENT+RESETS_STANDARD)
+		rc:RegisterEffect(e2,true)
 	end
 end
 
