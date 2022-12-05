@@ -25,8 +25,11 @@ function c62070240.initial_effect(c)
 	e3:SetCode(EFFECT_UPDATE_ATTACK)
 	e3:SetRange(LOCATION_SZONE)
 	e3:SetTargetRange(0,LOCATION_MZONE)
-	e3:SetValue(function(e,c) return Duel.GetFieldGroupCount(e:GetHandlerPlayer(),LOCATION_ONFIELD,0)*-100 end)
+	e3:SetValue(function(e,c) return Duel.GetFieldGroupCount(e:GetHandlerPlayer(),LOCATION_ONFIELD,0)*-200 end)
 	c:RegisterEffect(e3)
+	local e4=e3:Clone()
+	e4:SetCode(EFFECT_UPDATE_DEFENSE)
+	c:RegisterEffect(e4)
 end
 
 s.listed_series={0x85a,0x95,0x177,0x1178}
