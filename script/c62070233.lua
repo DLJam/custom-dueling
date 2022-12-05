@@ -23,11 +23,14 @@ function c62070233.initial_effect(c)
 	e2:SetTarget(s.spatg)
 	e2:SetOperation(s.spaop)
 	c:RegisterEffect(e2)   
-	--effect gain
+	--effect gain for Snow Shard/Crystalzero
 	local e3=Effect.CreateEffect(c)
-	e3:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
-	e3:SetCode(EVENT_BE_MATERIAL)
+	e3:SetDescription(aux.Stringid(62070233,0))
+	e3:SetCategory(CATEGORY_ATKCHANGE)
+	e3:SetType(EFFECT_TYPE_XMATERIAL+EFFECT_TYPE_IGNITION)
+	e3:SetProperty(EFFECT_FLAG_CARD_TARGET)
 	e3:SetCondition(s.effcon)
+	e3:SetTarget(s.target)
 	e3:SetOperation(s.effop)
 	c:RegisterEffect(e3)
 end
@@ -105,38 +108,15 @@ function s.spaop(e,tp,eg,ep,ev,re,r,rp)
 end
 
 function s.effcon(e,tp,eg,ep,ev,re,r,rp)
-	return r==REASON_XYZ and (e:GetHandler():GetReasonCard():IsSetCard(0x84a) or e:GetHandler():GetReasonCard():IsSetCard(0x85a))
+	return e:GetHandler():IsSetCard(0x84a) or e:GetHandler():IsSetCard(0x85a) and e:GetHandler():IsType(TYPE_XYZ)
+end
+function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
+	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(1-tp) and chkc:HasNonZeroAttack() end
+	if chk==0 then return Duel.IsExistingTarget(Card.HasNonZeroAttack,tp,0,LOCATION_MZONE,1,nil) end
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FACEUP)
+	Duel.SelectTarget(tp,Card.HasNonZeroAttack,tp,0,LOCATION_MZONE,1,1,nil)
 end
 function s.effop(e,tp,eg,ep,ev,re,r,rp)
-	Duel.Hint(HINT_CARD,0,id)
-	local c=e:GetHandler()
-	local rc=c:GetReasonCard()
-	local e1=Effect.CreateEffect(c)
-	e1:SetDescription(aux.Stringid(62070233,0))
-    e1:SetCategory(CATEGORY_ATKCHANGE)
-    e1:SetType(EFFECT_TYPE_IGNITION)
-    e1:SetProperty(EFFECT_FLAG_CARD_TARGET)
-    e1:SetRange(LOCATION_MZONE)
-    e1:SetTarget(s.target)
-    e1:SetOperation(s.operation)
-    rc:RegisterEffect(e1,true)
-	if not rc:IsType(TYPE_EFFECT) then
-		local e2=Effect.CreateEffect(c)
-		e2:SetType(EFFECT_TYPE_SINGLE)
-		e2:SetCode(EFFECT_ADD_TYPE)
-		e2:SetValue(TYPE_EFFECT)
-		e2:SetReset(RESET_EVENT+RESETS_STANDARD)
-		rc:RegisterEffect(e2,true)
-	end
-end
-
-function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-    if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(1-tp) and chkc:HasNonZeroAttack() end
-    if chk==0 then return Duel.IsExistingTarget(Card.HasNonZeroAttack,tp,0,LOCATION_MZONE,1,nil) end
-    Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FACEUP)
-    Duel.SelectTarget(tp,Card.HasNonZeroAttack,tp,0,LOCATION_MZONE,1,1,nil)
-end
-function s.operation(e,tp,eg,ep,ev,re,r,rp)
     local tc=Duel.GetFirstTarget()
     if tc:IsFaceup() and tc:IsRelateToEffect(e) and not tc:IsImmuneToEffect(e) then
         local c=e:GetHandler()
