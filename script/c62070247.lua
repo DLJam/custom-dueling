@@ -19,7 +19,19 @@ function c62070247.initial_effect(c)
 	e2:SetTarget(s.sptg)
 	e2:SetOperation(s.spop)
 	c:RegisterEffect(e2)	
-
+	--If your "Snow Shard" destroys a monster by battle, draw 1
+	local e3=Effect.CreateEffect(c)
+	e3:SetDescription(aux.Stringid(id,2))
+	e3:SetCategory(CATEGORY_DRAW)
+	e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
+	e3:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
+	e3:SetCode(EVENT_BATTLE_DESTROYING)
+	e3:SetCountLimit(1,{id,1})
+	e3:SetRange(LOCATION_SZONE)
+	e3:SetCondition(s.drcon)
+	e3:SetTarget(s.drtg)
+	e3:SetOperation(s.drop)
+	c:RegisterEffect(e3)
 	--Rank-Up Xyz Evolution!
 	local e4=Effect.CreateEffect(c)
 	e4:SetDescription(aux.Stringid(id,0))
@@ -75,6 +87,32 @@ function s.spop2(e,tp,eg,ep,ev,re,r,rp)
 	return function()
 		s.spop(e,tp,eg,ep,ev,re,r,rp)
 	end
+end
+
+function s.drcon(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
+	if not eg then return end
+	for rc in aux.Next(eg) do
+		if rc:IsStatus(STATUS_OPPO_BATTLE) then
+			if rc:IsRelateToBattle() then
+				if rc:IsControler(tp) and rc:IsSetCard(0x85a) then return true end
+			else
+				if rc:IsPreviousControler(tp) and rc:IsPreviousSetCard(0x85a) then return true end
+			end
+		end
+	end
+	return false
+end
+function s.drtg(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return Duel.IsPlayerCanDraw(tp,1) end
+	Duel.SetTargetPlayer(tp)
+	Duel.SetTargetParam(1)
+	Duel.SetOperationInfo(0,CATEGORY_DRAW,nil,0,tp,1)
+end
+function s.drop(e,tp,eg,ep,ev,re,r,rp)
+	if not e:GetHandler():IsRelateToEffect(e) then return end
+	local p,d=Duel.GetChainInfo(0,CHAININFO_TARGET_PLAYER,CHAININFO_TARGET_PARAM)
+	Duel.Draw(p,d,REASON_EFFECT)
 end
 
 function s.filter1(c,e,tp)
