@@ -23,6 +23,12 @@ function c62070246.initial_effect(c)
 	e2:SetTarget(s.drtg)
 	e2:SetOperation(s.drop)
 	c:RegisterEffect(e2)
+	--Gains 800 ATK
+	local e3=Effect.CreateEffect(c)
+	e3:SetType(EFFECT_TYPE_EQUIP)
+	e3:SetCode(EFFECT_UPDATE_ATTACK)
+	e3:SetValue(800)
+	c:RegisterEffect(e3)
 end
 
 s.listed_series={0x85a}
