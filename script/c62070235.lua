@@ -27,7 +27,6 @@ function c62070235.initial_effect(c)
 	e3:SetCondition(s.effcon)
 	e3:SetOperation(s.effop)
 	c:RegisterEffect(e3)
-	c:RegisterEffect(e3)
 end
 
 s.listed_series={0x85a,0x84a,0x1178}
@@ -38,16 +37,16 @@ function s.spcon(e,c)
 	return Duel.GetFieldGroupCount(tp,LOCATION_MZONE,0,nil)==0 and Duel.GetLocationCount(tp,LOCATION_MZONE)>0
 end
 
-function s.thfilter(c)
-	return c:IsSetCard(0x85a) and c:IsTrap() and c:IsAbleToHand()
+function s.thfilter1(c)
+	return c:IsSetCard(0x85a) and c:IsSpellTrap() and c:IsAbleToHand()
 end
 function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(s.thfilter,tp,LOCATION_DECK,0,1,nil) end
+	if chk==0 then return Duel.IsExistingMatchingCard(s.thfilter1,tp,LOCATION_DECK,0,1,nil) end
 	Duel.SetOperationInfo(0,CATEGORY_TOHAND,nil,1,tp,LOCATION_DECK)
 end
 function s.thop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
-	local g=Duel.SelectMatchingCard(tp,s.thfilter,tp,LOCATION_DECK,0,1,1,nil)
+	local g=Duel.SelectMatchingCard(tp,s.thfilter1,tp,LOCATION_DECK,0,1,1,nil)
 	if #g>0 then
 		Duel.SendtoHand(g,nil,REASON_EFFECT)
 		Duel.ConfirmCards(1-tp,g)
