@@ -41,8 +41,8 @@ function c62070247.initial_effect(c)
 	e4:SetRange(LOCATION_GRAVE)
 	e4:SetCountLimit(1,id)
 	e4:SetCost(aux.bfgcost)
-	e4:SetTarget(s.sptg)
-	e4:SetOperation(s.spop)
+	e4:SetTarget(s.rumtg)
+	e4:SetOperation(s.rumop)
 	c:RegisterEffect(e4)
 end
 
@@ -125,14 +125,14 @@ function s.filter2(c,e,tp,mc,code,pg)
 		and c:IsSetCard(0x85a) or c:IsSetCard(0x48) and not c:IsCode(code) and Duel.GetLocationCountFromEx(tp,tp,mc,c)>0
 		and mc:IsCanBeXyzMaterial(c,tp) and c:IsCanBeSpecialSummoned(e,SUMMON_TYPE_XYZ,tp,false,false)
 end
-function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
+function s.rumtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsControler(tp) and chkc:IsLocation(LOCATION_MZONE) and s.filter1(chkc,e,tp) end
 	if chk==0 then return Duel.IsExistingTarget(s.filter1,tp,LOCATION_MZONE,0,1,nil,e,tp) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TARGET)
 	Duel.SelectTarget(tp,s.filter1,tp,LOCATION_MZONE,0,1,1,nil,e,tp)
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_EXTRA)
 end
-function s.spop(e,tp,eg,ep,ev,re,r,rp)
+function s.rumop(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
 	local pg=aux.GetMustBeMaterialGroup(tp,Group.FromCards(tc),tp,nil,nil,REASON_XYZ)
 	if not tc or tc:IsFacedown() or not tc:IsRelateToEffect(e) or tc:IsControler(1-tp) or tc:IsImmuneToEffect(e) or #pg>1 or (#pg==1 and not pg:IsContains(tc)) then return end
