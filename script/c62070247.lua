@@ -39,7 +39,7 @@ function s.tgfilter(c,e,tp)
 	return c:IsFaceup() and c:IsControler(tp) and (not e or c:IsRelateToEffect(e))
 end
 function s.spcon(e,tp,eg,ep,ev,re,r,rp)
-	return eg:IsExists(s.tgfilter,1,nil,nil,1-tp) and Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsSetCard,0x85a),tp,LOCATION_ONFIELD,0,1,nil)
+	return eg:IsExists(s.tgfilter,1,nil,nil,1-tp) and Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsSetCard,0x85a),tp,LOCATION_SZONE,0,1,nil)
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end
