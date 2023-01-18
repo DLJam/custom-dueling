@@ -55,19 +55,15 @@ function s.destg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
 	local g=Duel.SelectTarget(tp,s.filter,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,3,nil)
 	Duel.SetOperationInfo(0,CATEGORY_DESTROY,g,#g,0,0)
-	if e:IsHasType(EFFECT_TYPE_ACTIVATE) then
-		Duel.SetChainLimit(s.limit(g:GetFirst()))
-		end
-	end
+		Duel.SetChainLimit(s.limit)
+end
 function s.desop(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.GetChainInfo(0,CHAININFO_TARGET_CARDS)
 	local sg=g:Filter(Card.IsRelateToEffect,nil,e)
 	Duel.Destroy(sg,REASON_EFFECT)
 end
-function s.limit(c)
-	return	function (e,lp,tp)
-				return e:GetHandler()~=c
-			end
+function s.limit(e,rp,tp)
+	return tp==rp or not e:IsHasType(EFFECT_TYPE_ACTIVATE)
 end
 
 function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
@@ -105,7 +101,7 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	if c:IsRelateToEffect(e) and Duel.SpecialSummonStep(c,0,tp,tp,false,false,POS_FACEUP) then
 			local e1=Effect.CreateEffect(c)
 			e1:SetType(EFFECT_TYPE_SINGLE)
-			e1:SetCode(EFFECT_UPDATE_LEVEL)
+			e1:SetCode(EFFECT_UPDATE_RANK)
 			e1:SetProperty(EFFECT_FLAG_COPY_INHERIT)
 			e1:SetValue(1)
 			e1:SetReset(RESET_EVENT+RESETS_STANDARD_DISABLE)
