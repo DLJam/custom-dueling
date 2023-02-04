@@ -55,7 +55,7 @@ function s.desop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 
-unction s.dmgcon(e,tp,eg,ep,ev,re,r,rp)
+function s.dmgcon(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	return c:IsReason(REASON_DESTROY) and c:IsReason(REASON_BATTLE)
 end
