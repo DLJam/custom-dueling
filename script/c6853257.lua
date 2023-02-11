@@ -1,4 +1,4 @@
---Dragon Lord's Companion, "Fudo"
+--Samsra, DL of Misery
 local s,id=GetID()
 function c6853257.initial_effect(c)
 	--special summon self from GY
