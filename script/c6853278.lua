@@ -15,16 +15,16 @@ function c6853278.initial_effect(c)
 	c:RegisterEffect(e1)
 	--Recycle
 	local e2=Effect.CreateEffect(c)
-    e2:SetDescription(aux.Stringid(id,0))
-    e2:SetCategory(CATEGORY_TOHAND)
-    e2:SetType(EFFECT_TYPE_IGNITION)
-    e2:SetRange(LOCATION_GRAVE)
-    e2:SetProperty(EFFECT_FLAG_CARD_TARGET)
+	e2:SetDescription(aux.Stringid(id,0))
+	e2:SetCategory(CATEGORY_TOHAND)
+	e2:SetType(EFFECT_TYPE_IGNITION)
+	e2:SetRange(LOCATION_GRAVE)
+	e2:SetProperty(EFFECT_FLAG_CARD_TARGET)
 	e2:SetCountLimit(1,{id,1},EFFECT_COUNT_CODE_OATH)
-    e2:SetCost(aux.bfgcost)
-    e2:SetTarget(s.thtg)
-    e2:SetOperation(s.thop)
-    c:RegisterEffect(e2)
+	e2:SetCost(aux.bfgcost)
+	e2:SetTarget(s.thtg)
+	e2:SetOperation(s.thop)
+	c:RegisterEffect(e2)
 end
 s.listed_series={0x41A}
 s.listed_names={id}
@@ -55,7 +55,7 @@ function s.desop(e,tp,eg,ep,ev,re,r,rp)
 		local e1=Effect.CreateEffect(c)
 		e1:SetType(EFFECT_TYPE_SINGLE)
 		e1:SetCode(EFFECT_UPDATE_ATTACK)
-		e1:SetValue(ct*500)
+		e1:SetValue(ct*200)
 		e1:SetReset(RESET_EVENT+RESETS_STANDARD_DISABLE+RESET_PHASE+PHASE_END)
 		c:RegisterEffect(e1)
 	end
@@ -64,19 +64,19 @@ function s.chlimit(e,ep,tp)
 	return tp==ep
 end
 function s.thfilter(c)
-    return c:IsSetCard(0x41A) and c:IsType(TYPE_MONSTER) and c:IsFaceup() and c:IsAbleToHand() and not c:IsCode(id)
+	return c:IsSetCard(0x41A) and c:IsType(TYPE_MONSTER) and c:IsFaceup() and c:IsAbleToHand() and not c:IsCode(id)
 end
-    --Activation legality
+	--Activation legality
 function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-    if chkc then return chkc:IsLocation(LOCATION_REMOVED) and chkc:IsControler(tp) and s.thfilter(chkc) end
-    if chk==0 then return Duel.IsExistingTarget(s.thfilter,tp,LOCATION_GRAVE+LOCATION_REMOVED,0,1,nil) end
-    Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
-    local g=Duel.SelectTarget(tp,s.thfilter,tp,LOCATION_REMOVED,0,1,2,e:GetHandler())
-    Duel.SetOperationInfo(0,CATEGORY_TOHAND,g,#g,0,0,tp,LOCATION_REMOVED)
+	if chkc then return chkc:IsLocation(LOCATION_REMOVED) and chkc:IsControler(tp) and s.thfilter(chkc) end
+	if chk==0 then return Duel.IsExistingTarget(s.thfilter,tp,LOCATION_GRAVE+LOCATION_REMOVED,0,1,nil) end
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
+	local g=Duel.SelectTarget(tp,s.thfilter,tp,LOCATION_REMOVED,0,1,1,e:GetHandler())
+	Duel.SetOperationInfo(0,CATEGORY_TOHAND,g,#g,0,0,tp,LOCATION_REMOVED)
 end
 function s.thop(e,tp,eg,ep,ev,re,r,rp)
-    local g=Duel.GetTargetCards(e)
-    if #g>0 then
-    	Duel.SendtoHand(g,nil,REASON_EFFECT) 
+	local g=Duel.GetTargetCards(e)
+	if #g>0 then
+		Duel.SendtoHand(g,nil,REASON_EFFECT) 
 	end
 end

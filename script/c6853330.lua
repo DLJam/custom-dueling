@@ -38,28 +38,21 @@ function c6853330.initial_effect(c)
 	e3:SetTarget(s.sptg)
 	e3:SetOperation(s.spop)
 	c:RegisterEffect(e3)
-	--Material check
-	local e4=Effect.CreateEffect(c)
-	e4:SetType(EFFECT_TYPE_SINGLE)
-	e4:SetCode(EFFECT_MATERIAL_CHECK)
-	e4:SetValue(s.valcheck)
-	e4:SetLabelObject(e3)
-	c:RegisterEffect(e4)
 	--Cannot Summon non-DL monsters the turn you activate effect
-	Duel.AddCustomActivityCounter(id,ACTIVITY_SPSUMMON,s.counterfilter)	
+	Duel.AddCustomActivityCounter(id,ACTIVITY_SPSUMMON,s.counterfilter 
 end
 s.listed_series={0x41A}
 function s.efilter(e,te)
 	return not te:GetHandler():IsSetCard(0x41A)
 end
 function s.condition(e,tp,eg,ep,ev,re,r,rp)
-    return e:GetHandler():GetPreviousLocation()==LOCATION_GRAVE
+	return e:GetHandler():GetPreviousLocation()==LOCATION_GRAVE
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
-    if chk==0 then return true end
-    Duel.SetTargetPlayer(tp)
-    Duel.SetTargetParam(1)
-    Duel.SetOperationInfo(0,CATEGORY_DRAW,nil,0,tp,1)
+	if chk==0 then return true end
+	Duel.SetTargetPlayer(tp)
+	Duel.SetTargetParam(1)
+	Duel.SetOperationInfo(0,CATEGORY_DRAW,nil,0,tp,1)
 end
 function s.counterfilter(c)
 	return c:IsSetCard(0x41A)
@@ -102,33 +95,16 @@ function s.spcon(e,tp,eg,ep,ev,re,r,rp)
 	return e:GetHandler():IsSummonType(SUMMON_TYPE_LINK)
 end
 function s.spfilter(c,e,tp,sync)
-	return c:IsControler(tp) and c:IsLocation(LOCATION_GRAVE)
-		and c:GetReason()&0x41A and c:GetReasonCard()==sync
-		and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
-end
+	 return c:IsSetCard(0x41A) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
-	local mg=e:GetHandler():GetMaterial()
-	local ft=Duel.GetLocationCount(tp,LOCATION_MZONE)
-	if chk==0 then return #mg>0 and ft>=#mg
-		and not Duel.IsPlayerAffectedByEffect(tp,CARD_BLUEEYES_SPIRIT)
-		and mg:FilterCount(s.spfilter,nil,e,tp,e:GetHandler())==#mg end
-	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,mg,#mg,tp,LOCATION_GRAVE)
+if chk==0 then return Duel.IsExistingMatchingCard(s.spfilter,tp,LOCATION_GRAVE,0,1,nil,e,tp) end
+	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_GRAVE+LOCATION_REMOVED)
 end
 function s.spop(e,tp,eg,ep,ev,re,r,rp)
-	local mg=e:GetHandler():GetMaterial()
-	local ft=Duel.GetLocationCount(tp,LOCATION_MZONE)
-	if Duel.IsPlayerAffectedByEffect(tp,CARD_BLUEEYES_SPIRIT) then return end
-	if #mg<=ft and mg:FilterCount(aux.NecroValleyFilter(s.spfilter),nil,e,tp,e:GetHandler())==#mg then
-		Duel.SpecialSummon(mg,0,tp,tp,false,false,POS_FACEUP)
-	end
-end
-function s.valcheck(e,c)
-	local g=c:GetMaterial()
-	if not g then return end
-	local ct=g:FilterCount(Card.IsSetCard,nil,0x41A)
-	if ct==#g then
-		e:GetLabelObject():SetLabel(2)
-	else
-		e:GetLabelObject():SetLabel(1)
+	if Duel.GetLocationCount(tp,LOCATION_MZONE)<=0 then return end
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
+	local g=Duel.SelectMatchingCard(tp,aux.NecroValleyFilter(s.spfilter),tp,LOCATION_GRAVE+LOCATION_REMOVED,0,1,1,nil,e,tp)
+	if #g>0 then
+		Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP)
 	end
 end
