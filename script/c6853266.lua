@@ -34,6 +34,9 @@ function s.indval(e,c)
 	return c:GetAttack()==e:GetHandler():GetAttack()
 end
 
+function s.con(e,tp,eg,ep,ev,re,r,rp)
+	return e:GetHandler():IsSummonLocation(LOCATION_GRAVE)
+end
 	--Activation legality
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsControler(1-tp) and chkc:IsLocation(LOCATION_SZONE) and chkc:IsAbleToHand() end
