@@ -58,7 +58,7 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.RegisterEffect(e1,tp)
 	end
 end
-function s.splimit(e,c)
+function s.splimit(e,c,sump,sumtype,sumpos,targetp,se)
 	return not c:IsRace(DRAGON)
 end
 function s.atkcon(e,tp,eg,ep,ev,re,r,rp)
