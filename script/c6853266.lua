@@ -62,6 +62,9 @@ end
 function s.atkop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	if c:IsFaceup() and c:IsRelateToEffect(e) then
+		local atk=c:GetMaterial():GetFirst():GetTextAttack()
+		if atk<0 then atk=0 end
+		if atk>0 then
 		--Gains half the attack of a dragon
 		local e1=Effect.CreateEffect(c)
 		e1:SetType(EFFECT_TYPE_SINGLE)
