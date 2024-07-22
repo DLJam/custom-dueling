@@ -13,17 +13,17 @@ function c6853270.initial_effect(c)
 	e1:SetOperation(s.spop)
 	c:RegisterEffect(e1)
 	--Perform a Fusion Summon
-	local params = {aux.FilterBoolFunction(Card.IsSetCard,0x41a),Fusion.OnFieldMat,nil,nil,Fusion.ForcedHandler}
 	local e2=Effect.CreateEffect(c)
 	e2:SetDescription(aux.Stringid(id,1))
 	e2:SetCategory(CATEGORY_SPECIAL_SUMMON+CATEGORY_FUSION_SUMMON)
 	e2:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
 	e2:SetProperty(EFFECT_FLAG_DELAY)
+	e2:SetRange(LOCATION_MZONE)
 	e2:SetCode(EVENT_SPSUMMON_SUCCESS)
 	e2:SetCountLimit(1,{id,1})
 	e2:SetCondition(s.atkcon)
-	e2:SetTarget(Fusion.SummonEffTG(table.unpack(params)))
-	e2:SetOperation(Fusion.SummonEffOP(table.unpack(params)))
+	e2:SetTarget(Fusion.SummonEffTG())
+	e2:SetOperation(Fusion.SummonEffOP())
 	c:RegisterEffect(e2)
 end
 
