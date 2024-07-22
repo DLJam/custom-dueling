@@ -72,5 +72,6 @@ function s.atkop(e,tp,eg,ep,ev,re,r,rp)
 		e1:SetValue(atk/2)
 		e1:SetReset(RESET_EVENT+RESETS_STANDARD_DISABLE)
 		c:RegisterEffect(e1)
+		end
 	end
 end
