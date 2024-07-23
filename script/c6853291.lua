@@ -81,30 +81,18 @@ function s.etg(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 
 
-function s.eop(e,tp,eg,ep,ev,re,r,rp)
-		local c=e:GetHandler()
-		local op=e:GetLabel()
-		if op==0 then
-		local tc=g2:Select(tp,1,1,nil):GetFirst()
-		Duel.HintSelection(tc,true)
-		if Duel.Destroy(tc,REASON_EFFECT)~=0
-		and (tc:IsType(TYPE_FIELD) or Duel.GetLocationCount(tp,LOCATION_SZONE)>0)
-		and not tc:IsLocation(LOCATION_HAND+LOCATION_DECK)
-		and tc:IsType(TYPE_SPELL+TYPE_TRAP)
-		and Duel.SelectYesNo(tp,aux.Stringid(id,3)) then
-		Duel.BreakEffect()
-		end
-	elseif op==1 then
-		if c:IsFaceup() and c:IsRelateToEffect(e) then
-			c:RegisterFlagEffect(id+1,RESET_EVENT+RESETS_STANDARD_DISABLE+RESET_PHASE+PHASE_END,0,0)
-			--Increase ATK
-			local e2=Effect.CreateEffect(c)
-			e2:SetType(EFFECT_TYPE_SINGLE)
-			e2:SetCode(EFFECT_UPDATE_ATTACK)
-			e2:SetValue(e:GetLabel())
-			e2:SetReset(RESET_EVENT+RESETS_STANDARD_DISABLE+RESET_PHASE+PHASE_END)
-			c:RegisterEffect(e2)
-			end
-		end
+function s.efftg(e,tp,eg,ep,ev,re,r,rp,chk)
+	local b1=Duel.IsExistingMatchingCard(Card.IsAbleToGrave,tp,0,LOCATION_ONFIELD,1,nil)
+	local b2=e:GetHandler():IsType(TYPE_XYZ) and Duel.IsExistingMatchingCard(s.matfilter,tp,LOCATION_REMOVED,0,1,nil,tp)
+	if chk==0 then return b1 or b2 end
+	local op=Duel.SelectEffect(tp,
+		{b1,aux.Stringid(id,2)},
+		{b2,aux.Stringid(id,3)})
+	e:SetLabel(op)
+	if op==1 then
+		e:SetCategory(CATEGORY_TOGRAVE)
+		Duel.SetOperationInfo(0,CATEGORY_TOGRAVE,nil,1,1-tp,LOCATION_ONFIELD)
+	elseif op==2 then
+		e:SetCategory(0)
 	end
 end
