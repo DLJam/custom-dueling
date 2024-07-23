@@ -104,6 +104,7 @@ function s.eop(e,tp,eg,ep,ev,re,r,rp)
 			e2:SetValue(e:GetLabel())
 			e2:SetReset(RESET_EVENT+RESETS_STANDARD_DISABLE+RESET_PHASE+PHASE_END)
 			c:RegisterEffect(e2)
+			end
 		end
 	end
 end
