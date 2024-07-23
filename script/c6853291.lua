@@ -77,20 +77,22 @@ function s.etg(e,tp,eg,ep,ev,re,r,rp,chk)
 		op=Duel.SelectOption(tp,aux.Stringid(id,2))+1
 	end
 	e:SetLabel(op)
+	end
 end
-function s.eop(e,tp,eg,ep,ev,re,r,rp)
-	local c=e:GetHandler()
-	local op=e:GetLabel()
-	if op==0 then
-				local tc=g2:Select(tp,1,1,nil):GetFirst()
-				Duel.HintSelection(tc,true)
-				if Duel.Destroy(tc,REASON_EFFECT)~=0
-					and (tc:IsType(TYPE_FIELD) or Duel.GetLocationCount(tp,LOCATION_SZONE)>0)
-					and not tc:IsLocation(LOCATION_HAND+LOCATION_DECK)
-					and tc:IsType(TYPE_SPELL+TYPE_TRAP) and tc:IsSSetable()
-					and Duel.SelectYesNo(tp,aux.Stringid(id,3)) then
-					Duel.BreakEffect()
 
+
+function s.eop(e,tp,eg,ep,ev,re,r,rp)
+		local c=e:GetHandler()
+		local op=e:GetLabel()
+		if op==0 then
+		local tc=g2:Select(tp,1,1,nil):GetFirst()
+		Duel.HintSelection(tc,true)
+		if Duel.Destroy(tc,REASON_EFFECT)~=0
+		and (tc:IsType(TYPE_FIELD) or Duel.GetLocationCount(tp,LOCATION_SZONE)>0)
+		and not tc:IsLocation(LOCATION_HAND+LOCATION_DECK)
+		and tc:IsType(TYPE_SPELL+TYPE_TRAP)
+		and Duel.SelectYesNo(tp,aux.Stringid(id,3)) then
+		Duel.BreakEffect()
 		end
 	elseif op==1 then
 		if c:IsFaceup() and c:IsRelateToEffect(e) then
