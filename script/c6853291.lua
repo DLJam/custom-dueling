@@ -56,11 +56,11 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 
---Apply an effect Tribute a Dragon
+--Apply an effect Tribute a Dragon: cost filter
 function s.atkfilter (c)
 	return c:GetTextAttack()>0 and c:IsRace(RACE_DRAGON)
 end
-
+--Cost operation
 function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
 	if chk==0 then return Duel.CheckReleaseGroupCost(tp,s.atkfilter,1,false,nil,c) end
@@ -70,23 +70,20 @@ function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	e:SetLabel(atk)
 	Duel.Release(g,REASON_COST)
 end
-
+--defines a valid target
 function s.efftg(e,tp,eg,ep,ev,re,r,rp,chk)
 	--Checks if option is possible to activate
 	local b1=Duel.IsExistingMatchingCard(nil, tp, LOCATION_SZONE, LOCATION_SZONE, nil)
-	local b2=e:GetHandler():IsType(TYPE_XYZ) and Duel.IsExistingMatchingCard(s.matfilter,tp,LOCATION_REMOVED,0,1,nil,tp)
-	if chk==0 then return b1 or b2 end
+	if chk==0 then return b1 end
 	--Chooses what text to display
 	local op=Duel.SelectEffect(tp,
 		{b1,aux.Stringid(id,2)},
-		{b2,aux.Stringid(id,3)})
-		local label = e:GetLabel
-		e:SetLabel(op, label)
+		{nil,aux.Stringid(id,3)})
+		e:SetLabel(op)
 	if op==1 then
 		e:SetCategory(CATEGORY_DESTROY)
 		Duel.SetOperationInfo(0,CATEGORY_DESTROY,nil,1,1-tp,LOCATION_SZONE)
 	elseif op==2 then
-		e:SetCategorySetCategory(CATEGORY_ATKCHANGE)
-		e:SetProperty(0)
+		e:SetCategory(0)
 	end
 end
