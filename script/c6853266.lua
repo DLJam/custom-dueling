@@ -53,25 +53,27 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 
+function s.atkfilter(c)
+	return c:GetTextAttack()>0 and c:IsRace(RACE_DRAGON)
+end
 function s.atkcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
-	if chk==0 then return Duel.CheckReleaseGroupCost(tp,Card.IsRace,1,false,nil,c,RACE_DRAGON) end
-	local g=Duel.SelectReleaseGroupCost(tp,Card.IsRace,1,1,false,nil,c,RACE_DRAGON)
+	if chk==0 then return Duel.CheckReleaseGroupCost(tp,s.atkfilter,1,false,nil,c) end
+	local g=Duel.SelectReleaseGroupCost(tp,s.atkfilter,1,1,false,nil,c)
+	local atk=g:GetFirst():GetTextAttack()
+	if atk<0 then atk=0 end
+	e:SetLabel(atk)
 	Duel.Release(g,REASON_COST)
 end
 function s.atkop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	if c:IsFaceup() and c:IsRelateToEffect(e) then
-		local atk=c:GetMaterial():GetFirst():GetTextAttack()
-		if atk<0 then atk=0 end
-		if atk>0 then
-		--Gains half the attack of a dragon
+		--Increase ATK
 		local e1=Effect.CreateEffect(c)
 		e1:SetType(EFFECT_TYPE_SINGLE)
 		e1:SetCode(EFFECT_UPDATE_ATTACK)
-		e1:SetValue(atk/2)
-		e1:SetReset(RESET_EVENT+RESETS_STANDARD_DISABLE)
+		e1:SetValue(e:GetLabel())
+		e1:SetReset(RESET_EVENT+RESETS_STANDARD_DISABLE+RESET_PHASE+PHASE_END)
 		c:RegisterEffect(e1)
-		end
 	end
 end
