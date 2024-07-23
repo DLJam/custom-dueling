@@ -1,4 +1,4 @@
---Sacrred Dragon Lord, Bloodshine
+--Storming Dragon Lord, Gale Highwind
 local s,id=GetID()
 function c6853291.initial_effect(c)
 	--Synchro summon
@@ -63,23 +63,6 @@ function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	local rg=Duel.SelectReleaseGroupCost(tp,Card.IsRace,1,1,false,nil,c,RACE_DRAGON)
 	Duel.Release(rg,REASON_COST)
 end
-function s.etg(e,tp,eg,ep,ev,re,r,rp,chk)
-	local c=e:GetHandler()
-	local con1=c:GetFlagEffect(id)==0
-	local con2=c:GetFlagEffect(id+1)==0
-	if chk==0 then return con1 or con2 end
-	local op=0
-	if con1 and con2 then
-		op=Duel.SelectOption(tp,aux.Stringid(id,1),aux.Stringid(id,2))
-	elseif con1 then
-		op=Duel.SelectOption(tp,aux.Stringid(id,1))
-	else
-		op=Duel.SelectOption(tp,aux.Stringid(id,2))+1
-	end
-	e:SetLabel(op)
-	end
-end
-
 
 function s.efftg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local b1=Duel.IsExistingMatchingCard(Card.IsAbleToGrave,tp,0,LOCATION_ONFIELD,1,nil)
