@@ -57,25 +57,36 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 end
 
 --Apply an effect Tribute a Dragon
+function s.atkfilter (c)
+	return c:GetTextAttack()>0 and c:IsRace(RACE_DRAGON)
+end
+
 function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
-	if chk==0 then return Duel.CheckReleaseGroupCost(tp,Card.IsRace,1,false,nil,c,RACE_DRAGON) end
-	local rg=Duel.SelectReleaseGroupCost(tp,Card.IsRace,1,1,false,nil,c,RACE_DRAGON)
-	Duel.Release(rg,REASON_COST)
+	if chk==0 then return Duel.CheckReleaseGroupCost(tp,s.atkfilter,1,false,nil,c) end
+	local g=Duel.SelectReleaseGroupCost(tp,s.atkfilter,1,1,false,nil,c)
+	local atk=g:GetFirst():GetTextAttack()
+	if atk<0 then atk=0 end
+	e:SetLabel(atk)
+	Duel.Release(g,REASON_COST)
 end
 
 function s.efftg(e,tp,eg,ep,ev,re,r,rp,chk)
-	local b1=Duel.IsExistingMatchingCard(Card.IsAbleToGrave,tp,0,LOCATION_ONFIELD,1,nil)
+	--Checks if option is possible to activate
+	local b1=Duel.IsExistingMatchingCard(nil, tp, LOCATION_SZONE, LOCATION_SZONE, nil)
 	local b2=e:GetHandler():IsType(TYPE_XYZ) and Duel.IsExistingMatchingCard(s.matfilter,tp,LOCATION_REMOVED,0,1,nil,tp)
 	if chk==0 then return b1 or b2 end
+	--Chooses what text to display
 	local op=Duel.SelectEffect(tp,
 		{b1,aux.Stringid(id,2)},
 		{b2,aux.Stringid(id,3)})
-	e:SetLabel(op)
+		local label = e:GetLabel
+		e:SetLabel(op, label)
 	if op==1 then
-		e:SetCategory(CATEGORY_TOGRAVE)
-		Duel.SetOperationInfo(0,CATEGORY_TOGRAVE,nil,1,1-tp,LOCATION_ONFIELD)
+		e:SetCategory(CATEGORY_DESTROY)
+		Duel.SetOperationInfo(0,CATEGORY_DESTROY,nil,1,1-tp,LOCATION_SZONE)
 	elseif op==2 then
-		e:SetCategory(0)
+		e:SetCategorySetCategory(CATEGORY_ATKCHANGE)
+		e:SetProperty(0)
 	end
 end
