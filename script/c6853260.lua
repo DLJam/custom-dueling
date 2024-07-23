@@ -66,7 +66,7 @@ end
 s.listed_series={0x41A}
 
 function s.spfilter(c,e,tp)
-	return c:IsLevelBelow(4) and c:IsSetCard(0x41a) and c:IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEUP_DEFENSE)
+	return c:IsRace(RACE_DRAGON) and c:IsSetCard(0x41a) and c:IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEUP_DEFENSE)
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsControler(tp) and chkc:IsLocation(LOCATION_GRAVE) and s.spfilter(chkc,e,tp) end
