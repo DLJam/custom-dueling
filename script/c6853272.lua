@@ -1,4 +1,4 @@
---DL Spiral
+--Drago-Emperor Spiral
 local s,id=GetID()
 function c6853272.initial_effect(c)
 	--Special summon itself from hand or GY

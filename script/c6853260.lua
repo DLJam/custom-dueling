@@ -1,4 +1,4 @@
---Dusted Dragon Lord, Debris
+--Drago-Emperor, Debris
 local s,id=GetID()
 function c6853260.initial_effect(c)
 	local e1=Effect.CreateEffect(c)
