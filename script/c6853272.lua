@@ -13,7 +13,7 @@ function c6853272.initial_effect(c)
 	e1:SetOperation(s.spop)
 	c:RegisterEffect(e1) 
 	--BotDeck Gift Effect
-    local e2=Effect.CreateEffect(c)
+	local e2=Effect.CreateEffect(c)
 	e2:SetDescription(aux.Stringid(id,1))
 	e2:SetCategory(CATEGORY_TODECK)
 	e2:SetType(EFFECT_TYPE_XMATERIAL+EFFECT_TYPE_QUICK_O)
@@ -58,7 +58,7 @@ end
 
 function s.tdcon(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
-	return c:GetOriginalRace()==(RACE_DRAGON or RACE_HIGHDRAGON) and c:IsType(TYPE_XYZ)
+	return c:IsSetCard(0x41a or 0x48) and c:IsType(TYPE_XYZ)
 end
 function s.tdcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return e:GetHandler():CheckRemoveOverlayCard(tp,1,REASON_COST) end

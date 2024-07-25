@@ -13,7 +13,7 @@ function c6853267.initial_effect(c)
 	e1:SetTarget(s.dtg)
 	e1:SetOperation(s.dop)
 	c:RegisterEffect(e1)	
-	--Add 1 banish "DL"
+	--Add 1 banish Drago-Emperor
 	local e2=Effect.CreateEffect(c)
 	e2:SetDescription(aux.Stringid(id,1))
 	e2:SetCategory(CATEGORY_TOHAND)
@@ -67,7 +67,7 @@ function s.thcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	g:AddCard(c)
 	Duel.Remove(g,POS_FACEUP,REASON_COST)
 end
-	--Check for "DL" card to add
+	--Check for Drago-Emperor card to add
 function s.thfilter(c)
 	return c:IsSetCard(0x41A) and c:IsAbleToHand() and not c:IsCode(id)
 end
@@ -76,7 +76,7 @@ function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.thfilter,tp,LOCATION_REMOVED,0,1,nil) end
 	Duel.SetOperationInfo(0,CATEGORY_TOHAND,nil,1,tp,LOCATION_REMOVED)
 end
-	--Add 1 banished "Dragon Lord"
+	--Add 1 banished Drago-Emperor
 function s.thop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
 	local g=Duel.SelectMatchingCard(tp,s.thfilter,tp,LOCATION_REMOVED,0,1,1,nil)
@@ -89,7 +89,7 @@ end
 function s.efcon(e,tp,eg,ep,ev,re,r,rp)
 	local p=e:GetHandler()
 	return (r&REASON_FUSION+REASON_SYNCHRO+REASON_XYZ+REASON_LINK)~=0 and p:IsPreviousLocation(LOCATION_ONFIELD)
-		and p:GetReasonCard():IsSetCard(0x41A)
+		and p:GetReasonCard():IsSetCard(0x41A or 0x48)
 end
 function s.efop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
