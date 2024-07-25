@@ -26,8 +26,8 @@ function c6853291.initial_effect(c)
 	e3:SetType(EFFECT_TYPE_IGNITION)
 	e3:SetRange(LOCATION_MZONE)
 	e3:SetCost(s.cost)
-	e3:SetTarget(s.etg)
-	e3:SetOperation(s.eop)
+	e3:SetTarget(s.efftg)
+	e3:SetOperation(s.effop)
 	c:RegisterEffect(e3)
 end
 
@@ -78,7 +78,7 @@ function s.efftg(e,tp,eg,ep,ev,re,r,rp,chk)
 	--Chooses what text to display
 	local op=Duel.SelectEffect(tp,
 		{b1,aux.Stringid(id,2)},
-		{nil,aux.Stringid(id,3)})
+		{true,aux.Stringid(id,3)})
 		e:SetLabel(op)
 	if op==1 then
 		e:SetCategory(CATEGORY_DESTROY)
@@ -87,3 +87,26 @@ function s.efftg(e,tp,eg,ep,ev,re,r,rp,chk)
 		e:SetCategory(0)
 	end
 end
+
+function s.effop(e,tp,eg,ep,ev,re,r,rp)
+  local op=e:GetLabel()
+  if op==1 then
+	--Destroy Spell Trap on field
+	local dg = Duel.GetMatchingGroup(nil,tp,LOCATION_SZONE,LOCATION_SZONE,nil)
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
+	local sg = dg:Select(tp,1,1,nil)
+	Duel.Destroy(sg,REASON_EFFECT)
+  end
+  if op == 2 then
+	--Gain ATK
+	local g1=e:GetLabelObject()
+	local atk=g1:GetTextAttack()
+	if c:IsFaceup() and c:IsRelateToEffect(e) then
+	  local e1=Effect.CreateEffect(c)
+	  e1:SetType(EFFECT_TYPE_SINGLE)
+	  e1:SetCode(EFFECT_UPDATE_ATTACK) 
+	  e1:SetValue(atk/2)
+	  c:RegisterEffect(e1)
+	  end
+	end
+end 
