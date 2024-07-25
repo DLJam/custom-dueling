@@ -70,10 +70,14 @@ function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	e:SetLabel(atk)
 	Duel.Release(g,REASON_COST)
 end
+
+function s.desfilter(c)
+	return c:IsType(TYPE_SPELL+TYPE_TRAP)
+end
 --defines a valid target
 function s.efftg(e,tp,eg,ep,ev,re,r,rp,chk)
 	--Checks if option is possible to activate
-	local b1=Duel.IsExistingMatchingCard(nil, tp, LOCATION_SZONE, LOCATION_SZONE, nil)
+	local b1=Duel.IsExistingMatchingCard(s.desfilter,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,nil)
 	if chk==0 then return b1 end
 	--Chooses what text to display
 	local op=Duel.SelectEffect(tp,
