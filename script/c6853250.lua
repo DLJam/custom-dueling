@@ -1,4 +1,4 @@
---Ruins of the Divine Dragon Lords
+--Drago-Emperor Citadel - Drakehaven
 local s,id=GetID()
 function c6853250.initial_effect(c)
 	--activate
@@ -80,28 +80,25 @@ function s.disop(e,tp,eg,ep,ev,re,r,rp)
 		end
 	end
 end
-function s.tkcostfilter(c,ft)
-	return c:IsFaceup() and c:IsAbleToGraveAsCost() and (ft>0 or (c:IsLocation(LOCATION_MZONE) and c:GetSequence()<5))
-end
+--Token
 function s.tkcost(e,tp,eg,ep,ev,re,r,rp,chk)
-	local ft=Duel.GetLocationCount(tp,LOCATION_MZONE)
-	if chk==0 then return ft>-1 and Duel.IsExistingMatchingCard(s.tkcostfilter,tp,LOCATION_ONFIELD,0,1,e:GetHandler(),ft) end
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
-	local g=Duel.SelectMatchingCard(tp,s.tkcostfilter,tp,LOCATION_ONFIELD,0,1,1,e:GetHandler(),ft)
-	Duel.SendtoGrave(g,REASON_COST)
+	if chk==0 then return e:GetHandler():IsAbleToGraveAsCost() end
+	Duel.SendtoGrave(e:GetHandler(),REASON_COST)
 end
 function s.tktg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsPlayerCanSpecialSummonMonster(tp,id+1,0x41a,TYPES_TOKEN,0,0,1,RACE_DRAGON,ATTRIBUTE_LIGHT) end
+	if chk==0 then return Duel.IsPlayerCanSpecialSummonMonster(tp,6853251,0x41a,TYPE_TOKEN,0,0,1,RACE_DRAGON,ATTRIBUTE_LIGHT) end
+	Debug.Message("Test")
 	Duel.SetOperationInfo(0,CATEGORY_TOKEN,nil,1,0,0)
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,0)
 end
 function s.tkop(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and e:GetHandler():IsRelateToEffect(e) 
-		and Duel.IsPlayerCanSpecialSummonMonster(tp,6853251,0,TYPES_TOKEN,0,0,1,RACE_DRAGON,ATTRIBUTE_LIGHT) then
+		and Duel.IsPlayerCanSpecialSummonMonster(tp,6853251,0x41a,TYPE_TOKEN,0,0,1,RACE_DRAGON,ATTRIBUTE_LIGHT) then
 		local token=Duel.CreateToken(tp,6853251)
-		Duel.SpecialSummon(token,0,tp,tp,false,false,POS_FACEUP)
+		Debug.Message(Duel.SpecialSummon(token,0,tp,tp,false,false,POS_FACEUP))
 	end
 end
+--To Hand
 function s.thcostfilter(c)
 	return c:IsRace(RACE_DRAGON) and (c:IsLevelAbove(7) or c:IsRankAbove(7)) and c:IsAbleToGraveAsCost()
 		and (c:IsLocation(LOCATION_HAND) or c:IsFaceup())
