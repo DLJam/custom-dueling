@@ -40,9 +40,9 @@ function c6853250.initial_effect(c)
 	c:RegisterEffect(e4)
 end
 s.listed_names={6853251}
-s.listed_series={0x41A}
+s.listed_series={0x41a}
 function s.dfilter(c,eg)
-	return c:IsFaceup() and c:IsRace(RACE_DRAGON) and (c:IsLevel(7) or c:IsLevel(8)) and not eg:IsContains(c)
+	return c:IsFaceup() and c:IsRace(RACE_DRAGON) and c:IsSetCard(0x41a) and not eg:IsContains(c)
 end
 function s.discon(e,tp,eg,ep,ev,re,r,rp)
 	return eg:IsExists(aux.NOT(Card.IsSummonLocation),1,nil,LOCATION_GRAVE) and Duel.IsExistingMatchingCard(s.dfilter,tp,LOCATION_MZONE,0,1,nil,eg)
@@ -91,7 +91,7 @@ function s.tkcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.SendtoGrave(g,REASON_COST)
 end
 function s.tktg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsPlayerCanSpecialSummonMonster(tp,id+1,0x41A,TYPES_TOKEN,0,0,1,RACE_DRAGON,ATTRIBUTE_LIGHT) end
+	if chk==0 then return Duel.IsPlayerCanSpecialSummonMonster(tp,id+1,0x41a,TYPES_TOKEN,0,0,1,RACE_DRAGON,ATTRIBUTE_LIGHT) end
 	Duel.SetOperationInfo(0,CATEGORY_TOKEN,nil,1,0,0)
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,0)
 end
@@ -103,7 +103,7 @@ function s.tkop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function s.thcostfilter(c)
-	return c:IsRace(RACE_DRAGON) and (c:IsLevel(7) or c:IsLevel(8)) and c:IsAbleToGraveAsCost()
+	return c:IsRace(RACE_DRAGON) and (c:IsLevelAbove(7) or c:IsRankAbove(7)) and c:IsAbleToGraveAsCost()
 		and (c:IsLocation(LOCATION_HAND) or c:IsFaceup())
 end
 function s.thcost(e,tp,eg,ep,ev,re,r,rp,chk)
