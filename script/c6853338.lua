@@ -30,11 +30,15 @@ function c6853338.initial_effect(c)
 end
 
 function s.tdcon(e,tp,eg,ep,ev,re,r,rp)
+	Debug.Message(e:GetHandler():IsSummonLocation(LOCATION_GRAVE))
 	return e:GetHandler():IsSummonLocation(LOCATION_GRAVE)
 end
 function s.tdtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
+	Debug.Message("Test 0")
 	if chkc then return chkc:IsLocation(LOCATION_GRAVE) and  chkc:IsControler(1-tp) and chkc:IsAbleToDeck() end
+	Debug.Message("Test 1")
 	if chk==0 then return Duel.IsExistingTarget(Card.IsAbleToDeck,tp,0,LOCATION_GRAVE,1,nil) end
+	Debug.Message("Test 2")
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TODECK)
 	local g=Duel.SelectTarget(tp,Card.IsAbleToDeck,tp,LOCATION_GRAVE,LOCATION_GRAVE,1,1,nil)
 	Duel.SetOperationInfo(0,CATEGORY_TODECK,g,1,0,0)
