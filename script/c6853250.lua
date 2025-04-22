@@ -86,17 +86,15 @@ function s.tkcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.SendtoGrave(e:GetHandler(),REASON_COST)
 end
 function s.tktg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsPlayerCanSpecialSummonMonster(tp,6853251,0x41a,TYPE_TOKEN,0,0,1,RACE_DRAGON,ATTRIBUTE_LIGHT) end
-	Debug.Message("Test")
-	Duel.SetOperationInfo(0,CATEGORY_TOKEN,nil,1,0,0)
-	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,0)
+    if chk==0 then return Duel.IsPlayerCanSpecialSummonMonster(tp,6853251,0x41a,TYPES_TOKEN,0,0,1,RACE_DRAGON,ATTRIBUTE_LIGHT) end
+    Duel.SetOperationInfo(0,CATEGORY_TOKEN,nil,1,0,0)
+    Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,0)
 end
 function s.tkop(e,tp,eg,ep,ev,re,r,rp)
-	if Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and e:GetHandler():IsRelateToEffect(e) 
-		and Duel.IsPlayerCanSpecialSummonMonster(tp,6853251,0x41a,TYPE_TOKEN,0,0,1,RACE_DRAGON,ATTRIBUTE_LIGHT) then
-		local token=Duel.CreateToken(tp,6853251)
-		Debug.Message(Duel.SpecialSummon(token,0,tp,tp,false,false,POS_FACEUP))
-	end
+    if Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and Duel.IsPlayerCanSpecialSummonMonster(tp,6853251,0x41a,TYPES_TOKEN,0,0,1,RACE_DRAGON,ATTRIBUTE_LIGHT) then
+        local token=Duel.CreateToken(tp,6853251)
+        Duel.SpecialSummon(token,0,tp,tp,false,false,POS_FACEUP)
+    end
 end
 --To Hand
 function s.thcostfilter(c)
