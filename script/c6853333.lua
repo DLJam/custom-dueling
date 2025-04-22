@@ -41,12 +41,12 @@ function c6853333.initial_effect(c)
 	e4:SetValue(1)
 	c:RegisterEffect(e4)		
 end
-s.listed_series={0x41A}
+s.listed_series={0x41a}
 function s.cfilter(c)
-    return c:IsSetCard(0x41A) and c:IsLevelAbove(7) and c:IsType(TYPE_MONSTER)
+    return c:IsSetCard(0x41a) and c:IsLevelAbove(7) and c:IsType(TYPE_MONSTER)
 end
 function s.condition(e,tp,eg,ep,ev,re,r,rp)
-    return Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_GRAVE,0,1,nil)
+    return Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_GRAVE,0,3,nil)
 end
 function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
     local c=e:GetHandler()
@@ -54,7 +54,7 @@ function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
     Duel.SendtoGrave(c,REASON_COST)
 end
 function s.filter(c,e,tp)
-    return c:IsSetCard(0x41A) and not c:IsCode(id) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
+    return c:IsSetCard(0x41a) and not c:IsCode(id) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 function s.tg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
     if chkc then return chkc:IsLocation(LOCATION_GRAVE) and s.filter(chkc,e,tp) end

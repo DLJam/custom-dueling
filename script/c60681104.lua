@@ -1,4 +1,4 @@
---Divine Dragon Lord Felgrand
+--Divine Emperor Felgrand
 local s,id=GetID()
 function c60681104.initial_effect(c)
 	--remove
@@ -21,6 +21,18 @@ function c60681104.initial_effect(c)
 	e2:SetTarget(s.sptg)
 	e2:SetOperation(s.spop)
 	c:RegisterEffect(e2)
+	--Draw
+	local e1=Effect.CreateEffect(c)
+	e1:SetDescription(aux.Stringid(id,0))
+	e1:SetCategory(CATEGORY_DRAW)
+	e1:SetType(EFFECT_TYPE_IGNITION)
+	e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
+	e1:SetRange(LOCATION_HAND)
+	e1:SetCountLimit(1,id)
+	e1:SetCost(s.drcost)
+	e1:SetTarget(s.drtg)
+	e1:SetOperation(s.drop)
+	c:RegisterEffect(e1)
 end
 s.listed_names={id}
 function s.rmcon(e,tp,eg,ep,ev,re,r,rp)
@@ -41,7 +53,7 @@ function s.rmop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local atk=0
 	if tc and tc:IsRelateToEffect(e) and Duel.Remove(tc,POS_FACEUP,REASON_EFFECT)~=0 then
-		if tc:IsType(TYPE_XYZ) then atk=tc:GetRank() else atk=tc:GetLevel() end
+		if tc:IsType(TYPE_XYZ) then atk=tc:GetRank() elseif tc:IsType(TYPE_LINK) then atk=tc:GetLink() else atk=tc:GetLevel() end
 		if c:IsFaceup() and c:IsRelateToEffect(e) then
 			local e1=Effect.CreateEffect(c)
 			e1:SetType(EFFECT_TYPE_SINGLE)
@@ -56,7 +68,7 @@ function s.rmop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function s.filter(c,e,tp)
-	return c:IsRace(RACE_DRAGON) and (c:GetLevel()==7 or c:GetLevel()==8) and not c:IsCode(id)
+	return c:IsRace(RACE_DRAGON) or c:IsRace(RACE_WYRM) and not c:IsCode(id)
 		and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
@@ -72,4 +84,26 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	if tc and tc:IsRelateToEffect(e) then
 		Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP)
 	end
+end
+--Draw (stolen from Ixchel)
+function s.cfilter(c)
+	return c:IsSetCard(0x41a) and c:IsDiscardable()
+end
+function s.drcost(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return e:GetHandler():IsDiscardable()
+		and Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_HAND,0,1,e:GetHandler()) end
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DISCARD)
+	local g=Duel.SelectMatchingCard(tp,s.cfilter,tp,LOCATION_HAND,0,1,1,e:GetHandler())
+	g:AddCard(e:GetHandler())
+	Duel.SendtoGrave(g,REASON_DISCARD|REASON_COST)
+end
+function s.drtg(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return Duel.IsPlayerCanDraw(tp,2) end
+	Duel.SetTargetPlayer(tp)
+	Duel.SetTargetParam(2)
+	Duel.SetOperationInfo(0,CATEGORY_DRAW,nil,0,tp,2)
+end
+function s.drop(e,tp,eg,ep,ev,re,r,rp)
+	local p,d=Duel.GetChainInfo(0,CHAININFO_TARGET_PLAYER,CHAININFO_TARGET_PARAM)
+	Duel.Draw(p,d,REASON_EFFECT)
 end
