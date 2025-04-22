@@ -46,7 +46,7 @@ function s.cfilter(c)
     return c:IsSetCard(0x41A) and c:IsLevelAbove(7) and c:IsType(TYPE_MONSTER)
 end
 function s.condition(e,tp,eg,ep,ev,re,r,rp)
-    return Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_GRAVE,0,2,nil)
+    return Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_GRAVE,0,1,nil)
 end
 function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
     local c=e:GetHandler()
