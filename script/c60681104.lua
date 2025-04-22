@@ -87,7 +87,7 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 end
 --Draw (stolen from Ixchel)
 function s.cfilter(c)
-	return c:IsSetCard(0x41a) and c:IsDiscardable()
+	return c:IsRace(RACE_DRAGON) or c:IsRace(RACE_WYRM) and not c:IsCode(id) and c:IsDiscardable()
 end
 function s.drcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return e:GetHandler():IsDiscardable()
