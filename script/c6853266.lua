@@ -17,14 +17,15 @@ function c6853266.initial_effect(c)
 	e2:SetTarget(s.target)
 	e2:SetOperation(s.operation)
 	c:RegisterEffect(e2)
-	--Make this card gain 500 ATK
+	--Make this card gain Equal
 	local e3=Effect.CreateEffect(c)
 	e3:SetDescription(aux.Stringid(id,3))
 	e3:SetCategory(CATEGORY_ATKCHANGE)
-	e3:SetType(EFFECT_TYPE_IGNITION)
+	e3:SetType(EFFECT_TYPE_QUICK_O)
+	e3:SetCode(EVENT_PRE_DAMAGE_CALCULATE)
 	e3:SetRange(LOCATION_MZONE)
-	e3:SetCost(s.atkcost)
-	e3:SetOperation(s.atkop)
+	e3:SetCondition(s.condition)
+	e3:SetOperation(s.activate)
 	c:RegisterEffect(e3)
 end
 
@@ -37,13 +38,16 @@ end
 function s.con(e,tp,eg,ep,ev,re,r,rp)
 	return e:GetHandler():IsSummonLocation(LOCATION_GRAVE)
 end
+function s.rmfilter(c)
+	return c:IsType(TYPE_MONSTER) and c:IsAbleToHand()
+
 	--Activation legality
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chkc then return chkc:IsControler(1-tp) and chkc:IsLocation(LOCATION_SZONE) and chkc:IsAbleToHand() end
-	if chk==0 then return Duel.IsExistingTarget(Card.IsAbleToHand,tp,0,LOCATION_SZONE,1,nil) end
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_RTOHAND)
-	local g=Duel.SelectTarget(tp,Card.IsAbleToHand,tp,0,LOCATION_SZONE,1,2,nil)
-	Duel.SetOperationInfo(0,CATEGORY_TOHAND,g,#g,0,0)
+	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(1-tp) and s.rmfilter(chkc) end
+	if chk==0 then return Duel.IsExistingTarget(s.rmfilter,tp,0,LOCATION_MZONE+LOCATION_GRAVE,1,nil) end
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_REMOVE)
+	local g=Duel.SelectTarget(tp,s.rmfilter,tp,0,LOCATION_MZONE+LOCATION_GRAVE,1,1,nil)
+	Duel.SetOperationInfo(0,CATEGORY_REMOVE,g,1,0,0)
 end
 	--Return up to 2 of opponent's spells/traps to hand
 function s.operation(e,tp,eg,ep,ev,re,r,rp)
@@ -53,27 +57,25 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 
-function s.atkfilter(c)
-	return c:GetTextAttack()>0 and c:IsRace(RACE_DRAGON)
+function s.condition(e,tp,eg,ep,ev,re,r,rp)
+	local bc=Duel.GetAttackTarget()
+	if not bc then return false end
+	local tc=Duel.GetAttacker()
+	if not tc:IsControler(tp) then tc,bc=bc,tc end
+	e:SetLabelObject(tc)
+	return tc:IsControler(tp) and not bc:IsControler(tp)
 end
-function s.atkcost(e,tp,eg,ep,ev,re,r,rp,chk)
-	local c=e:GetHandler()
-	if chk==0 then return Duel.CheckReleaseGroupCost(tp,s.atkfilter,1,false,nil,c) end
-	local g=Duel.SelectReleaseGroupCost(tp,s.atkfilter,1,1,false,nil,c)
-	local atk=g:GetFirst():GetTextAttack()
-	if atk<0 then atk=0 end
-	e:SetLabel(atk)
-	Duel.Release(g,REASON_COST)
-end
-function s.atkop(e,tp,eg,ep,ev,re,r,rp)
-	local c=e:GetHandler()
-	if c:IsFaceup() and c:IsRelateToEffect(e) then
-		--Increase ATK
-		local e1=Effect.CreateEffect(c)
+
+function s.activate(e,tp,eg,ep,ev,re,r,rp)
+	local tc=e:GetLabelObject()
+	local bc=tc:GetBattleTarget()
+	if tc:IsRelateToBattle() and not tc:IsImmuneToEffect(e)
+		and tc:IsControler(tp) and not bc:IsControler(tp) then
+		local e1=Effect.CreateEffect(e:GetHandler())
 		e1:SetType(EFFECT_TYPE_SINGLE)
-		e1:SetCode(EFFECT_UPDATE_ATTACK)
-		e1:SetValue(e:GetLabel())
-		e1:SetReset(RESET_EVENT+RESETS_STANDARD_DISABLE+RESET_PHASE+PHASE_END)
-		c:RegisterEffect(e1)
+		e1:SetCode(EFFECT_SET_ATTACK_FINAL)
+		e1:SetValue(bc:GetAttack())
+		e1:SetReset(RESET_EVENT|RESETS_STANDARD|RESET_PHASE|PHASE_DAMAGE_CAL)
+		tc:RegisterEffect(e1)
 	end
 end

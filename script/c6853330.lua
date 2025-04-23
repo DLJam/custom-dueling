@@ -39,8 +39,9 @@ function c6853330.initial_effect(c)
 	e3:SetOperation(s.spop)
 	c:RegisterEffect(e3)
 	--Cannot Summon non-DL monsters the turn you activate effect
-	Duel.AddCustomActivityCounter(id,ACTIVITY_SPSUMMON,s.counterfilter 
+	Duel.AddCustomActivityCounter(id,ACTIVITY_SPSUMMON,s.counterfilter)
 end
+
 s.listed_series={0x41A}
 function s.efilter(e,te)
 	return not te:GetHandler():IsSetCard(0x41A)
@@ -94,12 +95,16 @@ end
 function s.spcon(e,tp,eg,ep,ev,re,r,rp)
 	return e:GetHandler():IsSummonType(SUMMON_TYPE_LINK)
 end
+
 function s.spfilter(c,e,tp,sync)
 	 return c:IsSetCard(0x41A) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
+end
+
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 if chk==0 then return Duel.IsExistingMatchingCard(s.spfilter,tp,LOCATION_GRAVE,0,1,nil,e,tp) end
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_GRAVE+LOCATION_REMOVED)
 end
+
 function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.GetLocationCount(tp,LOCATION_MZONE)<=0 then return end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
