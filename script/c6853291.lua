@@ -85,8 +85,8 @@ function s.efftg(e,tp,eg,ep,ev,re,r,rp,chk)
 		{true,aux.Stringid(id,3)})
 		e:SetLabel(op)
 	if op==1 then
-		e:SetCategory(CATEGORY_DESTROY)
-		Duel.SetOperationInfo(0,CATEGORY_DESTROY,nil,1,1-tp,LOCATION_SZONE)
+		e:SetCategory(CATEGORY_TOHAND)
+		Duel.SetOperationInfo(0,CATEGORY_TOHAND,nil,1,1-tp,LOCATION_SZONE)
 	elseif op==2 then
 		e:SetCategory(0)
 	end
@@ -97,9 +97,9 @@ function s.effop(e,tp,eg,ep,ev,re,r,rp)
   if op==1 then
 	--Destroy Spell Trap on field
 	local dg = Duel.GetMatchingGroup(nil,tp,LOCATION_SZONE,LOCATION_SZONE,nil)
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
-	local sg = dg:Select(tp,1,1,nil)
-	Duel.Destroy(sg,REASON_EFFECT)
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_RTOHAND)
+	local sg = dg:Select(tp,1,2,nil)
+	Duel.SendtoHand(sg,REASON_EFFECT)
   end
   if op == 2 then
 	--Gain ATK
