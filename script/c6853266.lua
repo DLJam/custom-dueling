@@ -64,7 +64,6 @@ function s.condition(e,tp,eg,ep,ev,re,r,rp)
 	if not tc:IsControler(tp) then tc,bc=bc,tc end
 	e:SetLabelObject(tc)
 	return tc:IsControler(tp) and not bc:IsControler(tp)
-	c:RegisterFlagEffect(id,RESET_CHAIN,0,1)
 end
 
 function s.activate(e,tp,eg,ep,ev,re,r,rp)

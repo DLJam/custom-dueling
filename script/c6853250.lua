@@ -1,6 +1,7 @@
 --Drago-Emperor Citadel - Drakehaven
 local s,id=GetID()
 function c6853250.initial_effect(c)
+	c:SetUniqueOnField(1,0,id)
 	--activate
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_ACTIVATE)
@@ -25,6 +26,7 @@ function c6853250.initial_effect(c)
 	e3:SetType(EFFECT_TYPE_IGNITION)
 	e3:SetCountLimit(1,{id,1},EFFECT_COUNT_CODE_OATH)
 	e3:SetRange(LOCATION_SZONE)
+	e3:SetCondition(s.tkcon)
 	e3:SetCost(s.tkcost)
 	e3:SetTarget(s.tktg)
 	e3:SetOperation(s.tkop)
@@ -83,6 +85,12 @@ function s.disop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 --Token
+function s.tkfilter(c)
+	return c:IsFaceup()
+end
+function s.tkcon(e,tp,eg,ep,ev,re,r,rp)
+	return Duel.IsExistingMatchingCard(s.tkfilter,tp,LOCATION_REMOVED,0,3,nil)
+end
 function s.tkcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return e:GetHandler():IsAbleToGraveAsCost() end
 	Duel.SendtoGrave(e:GetHandler(),REASON_COST)
