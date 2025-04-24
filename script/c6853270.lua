@@ -21,7 +21,7 @@ function c6853270.initial_effect(c)
 	e2:SetRange(LOCATION_MZONE)
 	e2:SetCode(EVENT_SPSUMMON_SUCCESS)
 	e2:SetCountLimit(1,{id,1})
-	e2:SetCondition(s.atkcon)
+	e2:SetCondition(s.con)
 	e2:SetTarget(Fusion.SummonEffTG())
 	e2:SetOperation(Fusion.SummonEffOP())
 	c:RegisterEffect(e2)
@@ -59,8 +59,8 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function s.splimit(e,c,sump,sumtype,sumpos,targetp,se)
-	return not c:IsRace(DRAGON)
+	return not c:IsRace(TYPE_DRAGON)
 end
-function s.atkcon(e,tp,eg,ep,ev,re,r,rp)
+function s.con(e,tp,eg,ep,ev,re,r,rp)
 	return e:GetHandler():IsPreviousLocation(LOCATION_GRAVE)
 end
