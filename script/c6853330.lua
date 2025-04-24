@@ -4,48 +4,38 @@ function c6853330.initial_effect(c)
 	--Link Summon Condition
 	c:EnableReviveLimit()
 	Link.AddProcedure(c,aux.FilterBoolFunctionEx(Card.IsSetCard,0x41A),3)
-	--Immune
-	local e1=Effect.CreateEffect(c)
-	e1:SetType(EFFECT_TYPE_SINGLE)
-	e1:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
-	e1:SetRange(LOCATION_MZONE)
-	e1:SetCode(EFFECT_IMMUNE_EFFECT)
-	e1:SetValue(s.efilter)
-	c:RegisterEffect(e1)
 	--Add DL Spell/Trap to hand
-	local e2=Effect.CreateEffect(c)
-	e2:SetDescription(aux.Stringid(id,0))
-	e2:SetCategory(CATEGORY_TOHAND+CATEGORY_SEARCH)
+	local e1=Effect.CreateEffect(c)
+	e1:SetDescription(aux.Stringid(id,0))
+	e1:SetCategory(CATEGORY_TOHAND+CATEGORY_SEARCH)
+	e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
+	e1:SetCode(EVENT_SPSUMMON_SUCCESS)
+	e1:SetProperty(EFFECT_FLAG_DELAY)
+	e1:SetCountLimit(1,id,EFFECT_COUNT_CODE_OATH)
+	e1:SetCondition(s.syncon)
+	e1:SetCost(s.syncost)
+	e1:SetTarget(s.thtg)
+	e1:SetOperation(s.thop)
+	c:RegisterEffect(e1)
+	--Special Summon materials if Synchro Summoned using only DL monsters
+	local e3=Effect.CreateEffect(c)
+	e2:SetDescription(aux.Stringid(id,1))
+	e2:SetCategory(CATEGORY_SPECIAL_SUMMON)
 	e2:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
 	e2:SetCode(EVENT_SPSUMMON_SUCCESS)
 	e2:SetProperty(EFFECT_FLAG_DELAY)
 	e2:SetCountLimit(1,id,EFFECT_COUNT_CODE_OATH)
-	e2:SetCondition(s.syncon)
+	e2:SetCondition(s.spcon)
 	e2:SetCost(s.syncost)
-	e2:SetTarget(s.thtg)
-	e2:SetOperation(s.thop)
+	e2:SetTarget(s.sptg)
+	e2:SetOperation(s.spop)
 	c:RegisterEffect(e2)
-	--Special Summon materials if Synchro Summoned using only DL monsters
-	local e3=Effect.CreateEffect(c)
-	e3:SetDescription(aux.Stringid(id,1))
-	e3:SetCategory(CATEGORY_SPECIAL_SUMMON)
-	e3:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
-	e3:SetCode(EVENT_SPSUMMON_SUCCESS)
-	e3:SetProperty(EFFECT_FLAG_DELAY)
-	e3:SetCountLimit(1,id,EFFECT_COUNT_CODE_OATH)
-	e3:SetCondition(s.spcon)
-	e3:SetCost(s.syncost)
-	e3:SetTarget(s.sptg)
-	e3:SetOperation(s.spop)
-	c:RegisterEffect(e3)
 	--Cannot Summon non-DL monsters the turn you activate effect
 	Duel.AddCustomActivityCounter(id,ACTIVITY_SPSUMMON,s.counterfilter)
 end
 
 s.listed_series={0x41A}
-function s.efilter(e,te)
-	return not te:GetHandler():IsSetCard(0x41A)
-end
+
 function s.condition(e,tp,eg,ep,ev,re,r,rp)
 	return e:GetHandler():GetPreviousLocation()==LOCATION_GRAVE
 end

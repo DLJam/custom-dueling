@@ -57,7 +57,7 @@ function c6853253.initial_effect(c)
 end
 s.listed_series={0x41A}
 function s.thfilter(c)
-	return c:IsSetCard(0x41A) and c:IsAbleToHand()
+	return c:IsSetCard(0x41A) and c:IsMonster and c:IsAbleToHand()
 end
 function s.activate(e,tp,eg,ep,ev,re,r,rp)
 	if not e:GetHandler():IsRelateToEffect(e) then return end
