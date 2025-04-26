@@ -8,7 +8,7 @@ function c60681108.initial_effect(c)
 	e1:SetCountLimit(1,id)
 	e1:SetCondition(function(e,tp,eg,ep,ev,re,r,rp) return ep==1-tp 
 					and re:IsMonsterEffect() 
-					and Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsRace, RACE_DRAGON) and aux.FaceupFilter(Card.IsAttribute, ATTRIBUTE_DARK) and (aux.FaceupFilter(Card.IsLevelAbove, 8) or aux.FaceupFilter(Card.IsRankAbove,8))),tp,LOCATION_MZONE,0,1,nil) end)
+					and Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsRace, RACE_DRAGON) and aux.FaceupFilter(Card.IsAttribute, ATTRIBUTE_DARK) and (aux.FaceupFilter(Card.IsLevelAbove, 8) or aux.FaceupFilter(Card.IsRankAbove,8)),tp,LOCATION_MZONE,0,1,nil) end)
 	e1:SetTarget(s.chngtg)
 	e1:SetOperation(s.chngop)
 	c:RegisterEffect(e1)
