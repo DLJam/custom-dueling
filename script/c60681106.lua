@@ -15,7 +15,7 @@ function c60681106.initial_effect(c)
 	e1:SetOperation(s.spop)
 	c:RegisterEffect(e1)
 	local e2=e1:Clone()
-	e2:SetCode(EVENT_DESTROYED)
+	e2:SetCode(EVENT_REMOVE)
 	c:RegisterEffect(e2)
 end
 
