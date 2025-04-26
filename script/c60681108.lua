@@ -15,7 +15,7 @@ function c60681108.initial_effect(c)
 	
 end
 function s.chngtg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsAbleToHand),rp,0,LOCATION_MZONE,1,nil) end
+	if chk==0 then return Duel.IsExistingMatchingCard(1,rp,0,LOCATION_MZONE,1,nil) end
 end
 function s.chngop(e,tp,eg,ep,ev,re,r,rp)
 	local g=Group.CreateGroup()
@@ -23,10 +23,13 @@ function s.chngop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.ChangeChainOperation(ev,s.repop)
 end
 function s.repop(e,tp,eg,ep,ev,re,r,rp)
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_RTOHAND)
-	local g=Duel.SelectMatchingCard(tp,aux.FaceupFilter(Card.IsAbleToHand),tp,0,LOCATION_MZONE,1,1,nil)
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
+	local g=Duel.SelectMatchingCard(tp,1,tp,LOCATION_MZONE,0,1,1,nil)
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
+	local g2=Duel.SelectMatchingCard(1-tp,1,tp,0,LOCATION_MZONE,1,1,nil)
+	g.AddCard(g,g2)
 	if #g>0 then
 		Duel.HintSelection(g)
-		Duel.Destroy(g,nil,REASON_EFFECT)
+		Duel.Destroy(g,REASON_EFFECT)
 	end
 end
