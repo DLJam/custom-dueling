@@ -1,6 +1,7 @@
 --Emperor Dragon Power - Abyssal Majesty
 local s,id=GetID()
 function c60681108.initial_effect(c)
+	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(id,0))
 	e1:SetType(EFFECT_TYPE_ACTIVATE)
 	e1:SetCode(EVENT_CHAINING)
