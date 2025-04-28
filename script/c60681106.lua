@@ -17,7 +17,7 @@ function c60681106.initial_effect(c)
 	local e2=e1:Clone()
 	e2:SetCode(EVENT_REMOVE)
 	c:RegisterEffect(e2)
-	--remove
+	--Set
 	local e3=Effect.CreateEffect(c)
 	e3:SetDescription(aux.Stringid(id,1))	
 	e3:SetCategory(CATEGORY_REMOVE)
