@@ -117,7 +117,7 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 end
 
 function s.desfilter(c)
-	return c:IsRace(RACE_DRAGON) and c:IsAttribute(ATTRIBUTE_DARK) and C:IsSetCard(0x41a) 
+	return c:IsRace(RACE_DRAGON) and c:IsAttribute(ATTRIBUTE_DARK) and c:IsSetCard(0x41a) 
 end
 function s.con(e,tp,eg,ep,ev,re,r,rp)
 	return e:GetHandler():GetOverlayGroup():IsExists(s.desfilter,1,nil)
