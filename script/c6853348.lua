@@ -4,7 +4,6 @@ function c6853348.initial_effect(c)
 	--Xyz summon
 	c:EnableReviveLimit()
 	Xyz.AddProcedure(c,s.xyzfilter,8,2)
-
 	--Cannot be destroyed by effects
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE)
