@@ -64,9 +64,6 @@ function s.xyzlv(e,c,rc)
 	end
 end
 
-function s.splimit(e,c)
-	return not c:IsRace(RACE_DRAGON) or c:IsRace(RACE_WYRM)
-end
 function s.spcon(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.GetFieldGroup(tp,LOCATION_MZONE,0)
 	return (#g==0 or (#g>0 and g:FilterCount(aux.FaceupFilter(Card.IsRace,RACE_DRAGON) or aux.FaceupFilter(Card.IsRace,RACE_WYRM),nil)==#g))
