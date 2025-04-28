@@ -47,8 +47,8 @@ function c6853348.initial_effect(c)
 	e4:SetCountLimit(1,{id,1})
 	e4:SetCondition(s.con)
 	e4:SetCost(Cost.Detach(1,1,nil))
-	e4:SetTarget(s.target)
-	e4:SetOperation(s.activate)
+	e4:SetTarget(s.destg)
+	e4:SetOperation(s.desop)
 	c:RegisterEffect(e4)
 end
 
@@ -122,12 +122,14 @@ end
 function s.con(e,tp,eg,ep,ev,re,r,rp)
 	return e:GetHandler():GetOverlayGroup():IsExists(s.desfilter,1,nil)
 end
-function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(aux.TRUE,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil) end
-	local sg=Duel.GetMatchingGroup(aux.TRUE,tp,LOCATION_MZONE,LOCATION_MZONE,nil)
-	Duel.SetOperationInfo(0,CATEGORY_DESTROY,sg,#sg,0,0)
+function s.destg(e,tp,eg,ep,ev,re,r,rp,chk)
+	local g=Duel.GetMatchingGroup(nil,tp,LOCATION_MZONE,LOCATION_MZONE,nil)
+	if chk==0 then return #g>0 end
+	Duel.SetOperationInfo(0,CATEGORY_DESTROY,g,#g,tp,0)
 end
-function s.activate(e,tp,eg,ep,ev,re,r,rp)
-	local sg=Duel.GetMatchingGroup(aux.TRUE,tp,LOCATION_MZONE,LOCATION_MZONE,nil)
-	Duel.Destroy(sg,REASON_EFFECT)
+function s.desop(e,tp,eg,ep,ev,re,r,rp)
+	local g=Duel.GetMatchingGroup(nil,tp,LOCATION_MZONE,LOCATION_MZONE,nil)
+	if #g>0 then
+		Duel.Destroy(g,REASON_EFFECT)
+	end
 end
