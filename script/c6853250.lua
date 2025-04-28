@@ -30,16 +30,16 @@ function c6853250.initial_effect(c)
 	e3:SetTarget(s.tktg)
 	e3:SetOperation(s.tkop)
 	c:RegisterEffect(e3)
-	--to hand
+	--draw
 	local e4=Effect.CreateEffect(c)
 	e4:SetDescription(aux.Stringid(id,2))
-	e4:SetCategory(CATEGORY_TOHAND)
+	e4:SetCategory(CATEGORY_DRAW+CATEGORY_HANDES)
 	e4:SetType(EFFECT_TYPE_IGNITION)
 	e4:SetRange(LOCATION_GRAVE)
 	e4:SetCountLimit(1,{id,2},EFFECT_COUNT_CODE_OATH)
-	e4:SetCost(s.thcost)
-	e4:SetTarget(s.thtg)
-	e4:SetOperation(s.thop)
+	e4:SetCost(s.dtcost and Cost.SelfBanish)
+	e4:SetTarget(s.dtg)
+	e4:SetOperation(s.dop)
 	c:RegisterEffect(e4)
 end
 s.listed_names={6853251}
@@ -48,7 +48,7 @@ function s.dfilter(c,eg)
 	return c:IsFaceup() and c:IsRace(RACE_DRAGON) and c:IsSetCard(0x41a) and not eg:IsContains(c)
 end
 function s.discon(e,tp,eg,ep,ev,re,r,rp)
-	return eg:IsExists(aux.NOT(Card.IsSummonLocation),1,nil,LOCATION_GRAVE) and Duel.IsExistingMatchingCard(s.dfilter,tp,LOCATION_MZONE,0,1,nil,eg)
+	return eg:IsExists(aux.NOT(Card.IsSummonLocation),1,nil,LOCATION_GRAVE) and Duel.IsExistingMatchingCard(s.dfilter,tp,LOCATION_MZONE,0,1,nil,eg) and Duel.IsTurnPlayer(1-tp) 
 end
 function s.distg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end
@@ -110,19 +110,24 @@ function s.thcostfilter(c)
 	return c:IsRace(RACE_DRAGON) and (c:IsLevelAbove(7) or c:IsRankAbove(7)) and c:IsAbleToGraveAsCost()
 		and (c:IsLocation(LOCATION_HAND) or c:IsFaceup())
 end
-function s.thcost(e,tp,eg,ep,ev,re,r,rp,chk)
+function s.dtcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.thcostfilter,tp,LOCATION_MZONE+LOCATION_HAND,0,1,e:GetHandler()) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
 	local g=Duel.SelectMatchingCard(tp,s.thcostfilter,tp,LOCATION_MZONE+LOCATION_HAND,0,1,1,e:GetHandler())
 	Duel.SendtoGrave(g,REASON_COST)
 end
-function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return e:GetHandler():IsAbleToHand() end
-	Duel.SetOperationInfo(0,CATEGORY_TOHAND,e:GetHandler(),1,0,0)
+function s.dtg(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return Duel.IsPlayerCanDraw(tp,2) end
+	Duel.SetTargetPlayer(tp)
+	Duel.SetTargetParam(2)
+	Duel.SetOperationInfo(0,CATEGORY_DRAW,nil,0,tp,2)
+	Duel.SetOperationInfo(0,CATEGORY_HANDES,nil,0,tp,1)
 end
-function s.thop(e,tp,eg,ep,ev,re,r,rp)
-	if e:GetHandler():IsRelateToEffect(e) then
-		Duel.SendtoHand(e:GetHandler(),nil,REASON_EFFECT)
-		Duel.ConfirmCards(1-tp,e:GetHandler())
+function s.dop(e,tp,eg,ep,ev,re,r,rp)
+	local p=Duel.GetChainInfo(0,CHAININFO_TARGET_PLAYER)
+	if Duel.Draw(p,2,REASON_EFFECT)==2 then
+		Duel.ShuffleHand(tp)
+		Duel.BreakEffect()
+		Duel.DiscardHand(tp,nil,1,1,REASON_EFFECT+REASON_DISCARD)
 	end
 end
