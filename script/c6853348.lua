@@ -23,6 +23,19 @@ function c6853348.initial_effect(c)
 	e2:SetTarget(s.settg)
 	e2:SetOperation(s.setop)
 	c:RegisterEffect(e2)
+	--Special Summon this card from your hand or GY
+	local e3=Effect.CreateEffect(c)
+	e3:SetDescription(aux.Stringid(id,2))
+	e3:SetCategory(CATEGORY_SPECIAL_SUMMON)
+	e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
+	e3:SetProperty(EFFECT_FLAG_DELAY,EFFECT_FLAG2_CHECK_SIMULTANEOUS)
+	e3:SetCode(EVENT_DESTROYED)
+	e3:SetRange(LOCATION_GRAVE)
+	e3:SetCountLimit(1,id)
+	e3:SetCondition(s.spcon)
+	e3:SetTarget(s.sptg)
+	e3:SetOperation(s.spop)
+	c:RegisterEffect(e3)
 end
 
 s.listed_series={0x41A}
@@ -64,5 +77,27 @@ function s.setop(e,tp,eg,ep,ev,re,r,rp)
 		e2:SetReset(RESET_EVENT|RESETS_REDIRECT)
 		e2:SetValue(LOCATION_REMOVED)
 		c:RegisterEffect(e2)
+	end
+end
+
+function s.spcon(e,tp,eg,ep,ev,re,r,rp)
+	if r&REASON_EFFECT==0 then return false end
+	local g=eg:Filter(Card.IsPreviousLocation,nil,LOCATION_MZONE)
+	if #g==0 then return false end
+	if not (re and re:IsActivated() and re:IsHasProperty(EFFECT_FLAG_CARD_TARGET)) then return true end
+	local tg=Duel.GetChainInfo(0,CHAININFO_TARGET_CARDS)
+	return tg and #(g&tg)<#g
+end
+function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
+	local c=e:GetHandler()
+	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
+		and c:IsCanBeSpecialSummoned(e,1,tp,false,false)
+		and not (c:IsLocation(LOCATION_GRAVE) and eg:IsContains(c)) end
+	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,c,1,tp,0)
+end
+function s.spop(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
+	if c:IsRelateToEffect(e) then
+		Duel.SpecialSummon(c,1,tp,tp,false,false,POS_FACEUP)
 	end
 end
