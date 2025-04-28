@@ -36,14 +36,14 @@ function c6853348.initial_effect(c)
 	e3:SetTarget(s.sptg)
 	e3:SetOperation(s.spop)
 	c:RegisterEffect(e3)
-	--Activate
+	--WIPE
 	local e4=Effect.CreateEffect(c)
 	e4:SetDescription(aux.Stringid(id,1))
 	e4:SetType(EFFECT_TYPE_TRIGGER_O+EFFECT_TYPE_FIELD)
 	e4:SetCategory(CATEGORY_DESTROY)
 	e4:SetCode(EVENT_FREE_CHAIN)
 	e4:SetCode(EVENT_PHASE+PHASE_END)
-	e4:SetRange(LOCATION_GRAVE)
+	e4:SetRange(LOCATION_MZONE)
 	e4:SetCountLimit(1,{id,1})
 	e4:SetCondition(s.con)
 	e4:SetCost(Cost.Detach(1,1,nil))
@@ -121,7 +121,7 @@ function s.desfilter(c)
 end
 function s.con(e,tp,eg,ep,ev,re,r,rp)
 	return e:GetHandler():GetOverlayGroup():IsExists(s.desfilter,1,nil)
-end
+ end
 function s.destg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local g=Duel.GetMatchingGroup(nil,tp,LOCATION_MZONE,LOCATION_MZONE,nil)
 	if chk==0 then return #g>0 end
