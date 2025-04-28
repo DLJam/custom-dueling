@@ -29,7 +29,7 @@ end
 s.listed_series={0x41A}
 
 function s.xyzfilter(c,xyz,sumtype,tp)
-	return c:IsType(TYPE_XYZ,xyz,sumtype,tp) and 
+	return c:IsRace(RACE_DRAGON)
 end
 
 function s.setcon(e,tp,eg,ep,ev,re,r,rp)
