@@ -36,6 +36,20 @@ function c6853348.initial_effect(c)
 	e3:SetTarget(s.sptg)
 	e3:SetOperation(s.spop)
 	c:RegisterEffect(e3)
+	--Activate
+	local e4=Effect.CreateEffect(c)
+	e4:SetDescription(aux.Stringid(id,1))
+	e4:SetType(EFFECT_TYPE_TRIGGER_O+EFFECT_TYPE_FIELD)
+	e4:SetCategory(CATEGORY_DESTROY)
+	e4:SetCode(EVENT_FREE_CHAIN)
+	e4:SetCode(EVENT_PHASE+PHASE_END)
+	e4:SetRange(LOCATION_GRAVE)
+	e4:SetCountLimit(1,{id,1})
+	e4:SetCondition(s.con)
+	e4:SetCost(Cost.Detach(1,1,nil))
+	e4:SetTarget(s.target)
+	e4:SetOperation(s.activate)
+	c:RegisterEffect(e4)
 end
 
 s.listed_series={0x41A}
@@ -100,4 +114,20 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	if c:IsRelateToEffect(e) then
 		Duel.SpecialSummon(c,1,tp,tp,false,false,POS_FACEUP)
 	end
+end
+
+function s.desfilter(c)
+	return c:IsRace(RACE_DRAGON) and c:IsAttribute(ATTRIBUTE_DARK) and C:IsSetCard(0x41a) 
+end
+function s.con(e,tp,eg,ep,ev,re,r,rp)
+	return e:GetHandler():GetOverlayGroup():IsExists(s.desfilter,1,nil)
+end
+function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return Duel.IsExistingMatchingCard(aux.TRUE,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil) end
+	local sg=Duel.GetMatchingGroup(aux.TRUE,tp,LOCATION_MZONE,LOCATION_MZONE,nil)
+	Duel.SetOperationInfo(0,CATEGORY_DESTROY,sg,#sg,0,0)
+end
+function s.activate(e,tp,eg,ep,ev,re,r,rp)
+	local sg=Duel.GetMatchingGroup(aux.TRUE,tp,LOCATION_MZONE,LOCATION_MZONE,nil)
+	Duel.Destroy(sg,REASON_EFFECT)
 end
