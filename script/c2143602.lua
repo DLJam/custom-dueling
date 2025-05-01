@@ -13,7 +13,7 @@ function c2143602.initial_effect(c)
 	e1:SetCountLimit(1,id)
 	e1:SetCost(s.thcost)
 	e1:SetTarget(s.thtg)
-	e1:SetOperation(s.thpop)
+	e1:SetOperation(s.thop)
 	c:RegisterEffect(e1)	
 end
 
@@ -38,8 +38,9 @@ end
 function s.thop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
 	local g=Duel.SelectMatchingCard(tp,aux.NecroValleyFilter(s.thfilter),tp,LOCATION_GRAVE,0,1,1,nil)
+	Debug.Message(#g)
 	if #g>0 then
-		Duel.SendtoHand(g,nil,REASON_EFFECT)
+		Duel.SendtoHand(g,tp,REASON_EFFECT)
 		Duel.ConfirmCards(1-tp,g)
 	end
 end
