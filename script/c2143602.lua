@@ -29,10 +29,12 @@ function s.thcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.SendtoGrave(g,REASON_COST)
 end
 function s.thfilter(c)
-	return c:IsSetCard(0x102c) and c:IsAbleToHand()
+	return c:IsAbleToHand()
 end
 function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
+	Debug.Message("Test")
 	if chk==0 then return Duel.IsExistingMatchingCard(s.thfilter,tp,LOCATION_GRAVE,0,1,nil) end
+	Debug.Message("Test2")
 	Duel.SetOperationInfo(0,CATEGORY_TOHAND,nil,1,tp,LOCATION_GRAVE)
 end
 function s.thop(e,tp,eg,ep,ev,re,r,rp)
