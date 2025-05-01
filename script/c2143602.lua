@@ -20,7 +20,7 @@ end
 s.listed_series={0x102c}
 
 function s.selfcostfilter(c,tp)
-	return c:IsSetCard(0x102c) and c:IsAbleToGraveAsCost()
+	return c:IsSetCard(0x102c) and c:IsFaceup() and c:IsAbleToGraveAsCost()
 end
 function s.thcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.selfcostfilter,tp,LOCATION_EXTRA,0,1,nil) end
