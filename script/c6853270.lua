@@ -59,7 +59,7 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function s.splimit(e,c,sump,sumtype,sumpos,targetp,se)
-	return not c:IsRace(TYPE_DRAGON)
+	return not c:IsRace(RACE_DRAGON)
 end
 function s.con(e,tp,eg,ep,ev,re,r,rp)
 	return e:GetHandler():IsPreviousLocation(LOCATION_GRAVE)
