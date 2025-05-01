@@ -1,4 +1,5 @@
 --Three Musketeers - Lively Missile
+local s,id=GetID()
 function c2143601.initial_effect(c)
 	--Destroy adjacent to monster cards
 	local e1=Effect.CreateEffect(c)
