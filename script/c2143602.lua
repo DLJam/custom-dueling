@@ -1,6 +1,9 @@
 --Three Musketeers - Bellestarr
 local s,id=GetID()
 function c2143602.initial_effect(c)
+	--xyz summon
+	Xyz.AddProcedure(c,nil,7,2)
+	c:EnableReviveLimit()
 	--Special Summon this card from your hand
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(id,0))
