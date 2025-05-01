@@ -29,4 +29,4 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 		Duel.Destroy(tc,REASON_EFFECT)
 	end
 end	
-end
+
