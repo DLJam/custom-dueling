@@ -38,9 +38,9 @@ function s.cfilter(c,tc,seq)
 end
 function s.destg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsOnField() and chkc:IsFaceup() end
-	if chk==0 then return Duel.IsExistingTarget(s.cfilter,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,nil) end
+	if chk==0 then return Duel.IsExistingTarget(nil,tp,0,LOCATION_MZONE,1,nil) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
-	local tc=Duel.SelectTarget(tp,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,1,nil):GetFirst()
+	local tc=Duel.SelectTarget(nil,tp,0,LOCATION_MZONE,1,nil):GetFirst()
 	local g=tc:GetColumnGroup(1,1):Filter(s.cfilter,nil,tc,tc:GetSequence())
 	g:Merge(tc)
 	Duel.SetOperationInfo(0,CATEGORY_DESTROY,g,#g,0,0)
